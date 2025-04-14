@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生日快乐！🎂</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #ffebee;
+            color: #d32f2f;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.5em;
+            margin-bottom: 30px;
+        }
+        .cake {
+            font-size: 5em;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .signature {
+            margin-top: 40px;
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>生日快乐！</h1>
+    <p>愿你今天充满欢笑和惊喜，新的一岁万事顺意！🎉</p>
+    <div class="cake">🎂</div>
+    <p>蛋糕送给你，记得许愿哦~</p>
+    <div class="signature">—— 来自 GitHub Pages 的祝福</div>
+
+    <script>
+        // 点击蛋糕时触发特效
+        document.querySelector('.cake').addEventListener('click', function() {
+            this.style.transform = 'scale(1.5)';
+            setTimeout(() => { this.style.transform = 'scale(1)'; }, 500);
+        });
+    </script>
+</body>
+</html>
