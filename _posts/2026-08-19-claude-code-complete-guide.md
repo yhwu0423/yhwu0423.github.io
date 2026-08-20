@@ -236,6 +236,18 @@ Claude Code 的命令分三类：**内置命令**（核心 CLI）、**技能命�
 | `/insights` | 生成报告，分析你的使用习惯 |
 | `/exit` | 退出（别名 `/quit`） |
 
+关于 `/compact` 需要多说明两句：它不是简单地"砍掉旧消息"，而是让模型把整段对话**摘要压缩**后继续，并且**可以带参数指定保留重点**：
+
+```text
+/compact 保留数据库 schema 相关的讨论和未完成的迁移步骤
+/compact 重点保留刚才确定的 API 设计决策，其余可以丢弃
+```
+
+- 不带参数：按默认策略压缩整个对话历史
+- 带说明：压缩时优先保留你指定的核心信息，丢弃其余细节——长任务做到一半发现上下文将满时非常有用
+- 与 `/clear` 的区别：`/clear` 是彻底重开（旧会话只能从 `/resume` 找回），`/compact` 是"带着摘要继续干当前这件事"
+- 自动压缩阈值用 `/autocompact` 设置；接近上限时 Claude 也会主动提示
+
 ### 分支与后台会话（v2.x 新增）
 
 | 命令 | 功能 |
@@ -284,7 +296,7 @@ Claude Code 的命令分三类：**内置命令**（核心 CLI）、**技能命�
 | `/review` | ⚠️ 语义已变化：现在用于**审查 GitHub PR**；审查本地改动用 `/code-review` |
 | `/security-review` | 对当前分支改动做专项安全审查 |
 | `/diff` | 查看未提交改动和逐轮 diff |
-| `/memory` | 编辑记忆文件（CLAUDE.md） |
+| `/memory` | **记忆管理总入口**：打开交互式窗口，查看/编辑 CLAUDE.md、Auto Memory 记忆文件、开关自动记忆（详见第八章） |
 | `/hooks` | 查看已配置的钩子 |
 | `/skills` | 列出可用技能（`/skill-doctor` 可检查哪些技能白占上下文） |
 
@@ -373,27 +385,110 @@ claude -p \
 
 生产/CI 环境中优先用 `--allowedTools` 做精细授权，而不是 `--dangerously-skip-permissions`。
 
-## 八、CLAUDE.md 记忆系统
+## 八、记忆系统：CLAUDE.md 与 Auto Memory
 
-CLAUDE.md 是 Claude Code 的**持久记忆**：每次启动自动加载，相当于写给 Claude 的"项目说明书"。
+每次会话开始时 Claude 都是"失忆"的，有两套机制把知识带到下一个会话（官方文档 <https://code.claude.com/docs/en/memory>）：
 
-### 层级与位置
+| | CLAUDE.md | Auto Memory |
+| --- | --- | --- |
+| **谁写的** | 你 | Claude 自己 |
+| **内容** | 指令与规则 | Claude 总结的经验与模式 |
+| **作用范围** | 项目 / 用户 / 组织 | 按仓库隔离（同一 repo 的所有 worktree、子目录共享） |
+| **加载方式** | 每次会话全量加载 | 每次会话加载索引前 200 行或 25KB |
+| **适合放** | 编码规范、工作流、项目架构 | 构建命令、调试心得、Claude 发现的偏好 |
+
+### CLAUDE.md 的四个级别
+
+CLAUDE.md 是你手写的长期规则文件，按作用范围从大到小分四级（加载顺序也是这个顺序，越具体越靠后）：
 
 | 级别 | 路径 | 用途 | 是否提交 Git |
 | --- | --- | --- | --- |
-| 项目记忆 | `./CLAUDE.md` | 团队共享的项目约定 | ✅ 提交 |
-| 项目本地 | `./CLAUDE.local.md` | 个人项目偏好（已废弃，建议改用 import） | ❌ |
-| 用户记忆 | `~/.claude/CLAUDE.md` | 跨项目的个人偏好 | ❌ |
+| 组织级（Managed policy） | macOS `/Library/Application Support/ClaudeCode/CLAUDE.md`；Linux/WSL `/etc/claude-code/CLAUDE.md`；Windows `C:\Program Files\ClaudeCode\CLAUDE.md` | 企业 IT/DevOps 统一下发的规范，不可被个人设置排除 | — |
+| 用户级 | `~/.claude/CLAUDE.md` | 跨所有项目的个人偏好（代码风格、常用工具） | ❌ |
+| 项目级 | `./CLAUDE.md` 或 `./.claude/CLAUDE.md` | 团队共享的项目约定 | ✅ 提交 |
+| 项目本地级 | `./CLAUDE.local.md` | 个人的项目内偏好（沙箱地址、测试数据等），记得加进 `.gitignore` | ❌ |
 
-父目录的 CLAUDE.md 会一并加载；子目录的 CLAUDE.md 在 Claude 读取该目录文件时按需加载。
+### 加载机制：父目录全量加载，子目录按需加载
 
-### 三种管理方式
+这是最容易被忽略、也最值得理解的一点：
+
+- **启动时**：Claude 从当前工作目录**向上逐级查找**，把路径上每一级的 `CLAUDE.md` 和 `CLAUDE.local.md` **全部拼进上下文**（不是互相覆盖）。顺序是从文件系统根部到你的工作目录——离你启动位置越近的规则越靠后（越"新鲜"）；同一目录内 `CLAUDE.local.md` 排在 `CLAUDE.md` 之后
+- **子目录**：当前目录**之下**的各子目录里也可以单独建立 `CLAUDE.md`，但它们**不会在启动时加载**，而是当 Claude **读取到那个子目录里的文件时才按需注入**。这对 monorepo 非常有用——每个 package 可以有自己的约定，只有 Claude 真的改到那个包时才占用上下文
+- 想确认本次会话到底加载了哪些记忆文件，运行 `/context` 查看 **Memory files** 列表
+- monorepo 里如果不想要其他团队的 CLAUDE.md，可在 settings 里用 `claudeMdExcludes` 按路径/glob 排除（组织级文件不可排除）
+- 补充：`/compact` 之后，项目根的 CLAUDE.md 会从磁盘**重新注入**；但子目录的 CLAUDE.md 和路径规则不会自动恢复，要等 Claude 下次读到对应文件才重新加载
+
+### `@` 导入其他文件
+
+CLAUDE.md 里可以用 `@路径` 导入其他文件，导入的内容**在启动时随 CLAUDE.md 一起全量进入上下文**：
+
+```text
+详见 @README 和 @docs/git-workflow.md
+```
+
+- 相对路径**相对于包含 import 的那个文件**解析，不是工作目录；也支持绝对路径
+- 可以递归导入，**最多 4 层嵌套**
+- 代码块和行内代码中的 `@路径` 不会被解析——想提到某个文件但不导入，用反引号包起来：`` `@README` ``
+- 项目级文件 import 了工作目录之外的文件（如 `@~/.claude/my-notes.md`）时，首次会弹**确认对话框**（防止别人提交到共享项目的恶意导入）
+- 已有 `AGENTS.md` 的仓库，直接在 CLAUDE.md 里写 `@AGENTS.md` 即可共用一份说明，不用复制
+- 注意：import 只是组织方式，**不能减少上下文占用**——导入的文件同样在启动时加载
+
+### `.claude/rules/`：按路径按需加载的规则
+
+比子目录 CLAUDE.md 更精细的机制：把规则拆成 `.claude/rules/` 下的多个 Markdown 文件（如 `testing.md`、`api-design.md`），并通过 YAML frontmatter 的 `paths` 字段把规则**绑定到特定文件**：
+
+````markdown
+---
+paths:
+  - "src/api/**/*.ts"
+---
+
+# API 开发规则
+- 所有接口必须做输入校验
+- 使用统一的错误响应格式
+````
+
+不带 `paths` 的规则在启动时全量加载；带 `paths` 的规则**只在 Claude 读取匹配文件时才注入上下文**——既不占平时的 token，又保证改到对应文件时规则在场。用户级规则放在 `~/.claude/rules/`，对所有项目生效（优先级低于项目规则）。
+
+### Auto Memory：自动记忆系统
+
+Auto Memory 是 Claude **自己记笔记**的系统，**当前版本默认开启**。它保存的是 Claude 在工作过程中发现的、以后可能还有价值的经验，例如"这个项目的 integration test 必须先启动 Redis"、某条调试结论、你的工作习惯。Claude 不是每次会话都写——它自己判断哪些信息值得记。当你在界面看到 "Saved 2 memories" / "Recalled 2 memories" 这类提示，就是它在写/读记忆。
+
+**存储位置与加载机制：**
+
+- 每个项目的记忆保存在 `~/.claude/projects/<project>/memory/` 下。`<project>` 由 **git 仓库**推导，因此同一 repo 的**所有 worktree 和子目录共享同一份**自动记忆；不在 git 仓库里则以项目根目录为准。记忆是**本机存储**的，不跨机器同步
+- 目录结构：`MEMORY.md` 是**索引入口** + 若干主题文件（如 `debugging.md`、`api-conventions.md`）
+- 会话启动时**只加载 `MEMORY.md` 的前 200 行或前 25KB（先到为准）**，超出的部分直接丢弃；所以索引要保持一行一条，细节挪进主题文件。主题文件**启动时不加载**，Claude 需要时用文件工具按需读取
+- 索引超限时写入仍会成功，但 Claude Code 会返回错误提示 Claude 重写精简索引
+- 主会话的 Auto Memory **不会加载进子代理**（`/fork` 分叉出的会话除外）；子代理可以通过 `memory` 字段拥有自己的独立记忆目录
+- 这些记忆文件**不受会话记录自动清理影响**，会一直保留直到你或 Claude 删改
+
+**开关与自定义：**
+
+- 在 `/memory` 窗口里切换开关（写入用户设置的 `autoMemoryEnabled`）
+- 单项目关闭：项目 settings 里设 `"autoMemoryEnabled": false`
+- 环境变量 `CLAUDE_CODE_DISABLE_AUTO_MEMORY=1` 全局禁用
+- 想换存储位置：settings 里设 `autoMemoryDirectory`（绝对路径或 `~/` 开头）
+
+### `/memory`：记忆管理总入口
+
+`/memory` **不是简单命令，而是吊起一个交互式窗口**。在窗口里你可以：
+
+- **浏览并选择要编辑的记忆文件**：列出用户级、项目级所有 CLAUDE.md / CLAUDE.local.md 位置，**包括还不存在的文件**——选中不存在的会先创建再打开
+- **开关 Auto Memory**
+- **打开 Auto Memory 目录**，直接翻看 Claude 都记了些什么（纯 Markdown，可改可删）
+- 选中的文件会在你的编辑器里打开；GUI 编辑器（如 VS Code）在新窗口打开、不阻塞会话，终端编辑器（如 Vim）则会占用终端直到退出
+
+配合 `/context` 使用：一个管"有哪些记忆文件可编辑"，一个管"本次会话实际加载了哪些"。
+
+### 写入记忆的几种方式
 
 - `/init`：自动扫描代码库，生成初始 CLAUDE.md（**新项目第一步**）
-- `/memory`：在编辑器中直接编辑记忆文件
-- 会话中输入 `#内容`：快速追加一条记忆
+- `#内容`：会话中快速追加一条记忆（会提示选择项目级或用户级）
+- **自然语言**：说"记住：这个项目用 pnpm"会写入 Auto Memory；说"把这条加到 CLAUDE.md"则写入规则文件；说"忘掉关于 X 的记忆"可删除
+- **Auto Memory 自动写入**：开启后 Claude 自己判断、自己存
 
-### 内容示例与最佳实践
+### CLAUDE.md 内容示例与最佳实践
 
 ````markdown
 # 项目约定
@@ -413,13 +508,16 @@ CLAUDE.md 是 Claude Code 的**持久记忆**：每次启动自动加载，相�
 详细 API 说明见 @docs/api-guide.md
 ````
 
-**要点：**
+**要点（官方建议）：**
 
-1. **保持精简**——每次会话都加载，太冗长浪费上下文
-2. **写 Claude 推断不出来的东西**：构建命令、测试流程、架构决策、已知坑
-3. **具体可执行**：写"运行 `pnpm test:unit`"而不是"写好测试"
-4. **用 `@路径` 导入**其他文档而不是复制内容（最多 5 层嵌套）
-5. **不要存密钥**——纯文本且通常会被提交到 Git
+1. **每个 CLAUDE.md 控制在 200 行以内**——全量加载进上下文，越长越占 token、遵守度越差；内容太多就拆到 `.claude/rules/` 按路径加载
+2. **写 Claude 推断不出来的东西**：构建命令、测试流程、架构决策、已知坑（目录结构、依赖列表这类 Claude 自己能看出来的不必写）
+3. **具体可验证**：写"提交前运行 `pnpm test:unit`"而不是"写好测试"；写"用 2 空格缩进"而不是"格式化好代码"
+4. **避免规则互相矛盾**——两条规则冲突时 Claude 会任意选一条；定期审查各级 CLAUDE.md、子目录 CLAUDE.md 和 `.claude/rules/`
+5. **不要存密钥**——纯文本且项目级通常会被提交到 Git
+6. **必须在固定时机执行的"铁律"不要用记忆**，用 Hooks（记忆只是上下文提示，不保证严格执行）
+7. **分工**：稳定、需要团队共享的约定写 CLAUDE.md；Claude 自己踩坑总结的经验交给 Auto Memory
+8. CLAUDE.md 太大时可以跑 `/doctor`，它会建议删掉 Claude 能自己推导的内容（v2.1.206+）
 
 ## 九、自定义斜杠命令
 
@@ -604,7 +702,7 @@ MCP 工具以 `mcp__<服务器名>__<工具名>` 的形式出现在权限规则�
 | **先 `/init`** | 新项目第一件事，生成 CLAUDE.md 让 Claude 理解项目 |
 | **及时 `/clear`** | 切换任务时清空上下文，避免旧上下文干扰 |
 | **长会话看 `/context`** | 可视化上下文各部分占用，发现 MCP 工具或 CLAUDE.md 吃 token 太多就裁剪 |
-| **及时 `/compact`** | 上下文将满时压缩，保留要点继续 |
+| **及时 `/compact`** | 上下文将满时压缩，可带参数指定保留重点，如 `/compact 保留 API 设计决策` |
 | **多用 `@` 引用** | 精确指向文件，比"那个处理登录的文件"高效得多 |
 | **给验证手段** | 告诉 Claude 怎么验证（跑哪个测试、访问哪个 URL），它会自我修正 |
 | **截图输入** | UI 问题直接贴截图；也可贴设计稿让 Claude 实现 |

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "AI 应用与 Agent 开发：5 个月学习与求职计划"
+title: "AI 应用与 Agent 开发：5 个月学习与求职计划v2"
 subtitle: "以开源项目为教材，从最小 Agent Loop 到生产级 Coding Agent"
 date: 2026-08-20 12:00:00
 author: "wyh"
@@ -53,33 +53,33 @@ tags:
 
 ### P0：必须掌握
 
-| 技术领域 | 具体内容 | 掌握标准 |
-| --- | --- | --- |
-| Python 3.11+ | 类型标注、异常、dataclass、Protocol、生成器 | 能写出结构清晰、可测试的业务模块 |
-| 工程化 | `uv`、`pyproject.toml`、Ruff、Pyright、pytest、Git | 一条命令完成安装、检查、测试和启动 |
-| 异步编程 | `asyncio`、并发限制、超时、取消、重试 | 能并发调用模型和工具且不失控 |
-| Web 后端 | HTTP、REST、SSE、WebSocket、FastAPI、Pydantic | 能实现流式聊天和结构化 API |
-| 数据库 | PostgreSQL、SQLAlchemy、迁移、事务、索引 | 能保存用户、会话、文档、反馈和任务状态 |
-| 缓存与任务 | Redis、幂等、限流、后台任务 | 能处理缓存、会话和异步任务状态 |
-| 基础设施 | Linux、Docker、Docker Compose、环境变量 | 能本地和云端复现项目 |
-| LLM 原语 | Token、上下文、结构化输出、Tool Calling、Streaming | 不依赖框架完成完整工具调用循环 |
-| Agent Harness | Agent Loop、工具调度、任务规划、上下文压缩、权限与隔离 | 能手写最小 Harness 并讲清每一层为什么存在 |
-| RAG | 清洗、切分、Embedding、召回、重排、引用、评估 | 能用数据证明检索效果变化 |
-| 测试与安全 | 单元/集成测试、Prompt Injection、权限、密钥管理 | 覆盖成功、失败和攻击路径 |
-| 算法与数据结构 | LeetCode Hot 100、常见手撕题（贯穿 20 周，每周 3～5 题） | 中等题 30 分钟内 bug-free，笔试不被卡 |
-| LLM 原理（讲得清即可） | Transformer、Attention、KV Cache、采样参数、上下文窗口、SFT/RLHF 概念 | 面试能白板讲清推理过程，不要求会训练 |
+| 技术领域               | 具体内容                                                              | 掌握标准                                  |
+| ---------------------- | --------------------------------------------------------------------- | ----------------------------------------- |
+| Python 3.11+           | 类型标注、异常、dataclass、Protocol、生成器                           | 能写出结构清晰、可测试的业务模块          |
+| 工程化                 | `uv`、`pyproject.toml`、Ruff、Pyright、pytest、Git                    | 一条命令完成安装、检查、测试和启动        |
+| 异步编程               | `asyncio`、并发限制、超时、取消、重试                                 | 能并发调用模型和工具且不失控              |
+| Web 后端               | HTTP、REST、SSE、WebSocket、FastAPI、Pydantic                         | 能实现流式聊天和结构化 API                |
+| 数据库                 | PostgreSQL、SQLAlchemy、迁移、事务、索引                              | 能保存用户、会话、文档、反馈和任务状态    |
+| 缓存与任务             | Redis、幂等、限流、后台任务                                           | 能处理缓存、会话和异步任务状态            |
+| 基础设施               | Linux、Docker、Docker Compose、环境变量                               | 能本地和云端复现项目                      |
+| LLM 原语               | Token、上下文、结构化输出、Tool Calling、Streaming                    | 不依赖框架完成完整工具调用循环            |
+| Agent Harness          | Agent Loop、工具调度、任务规划、上下文压缩、权限与隔离                | 能手写最小 Harness 并讲清每一层为什么存在 |
+| RAG                    | 清洗、切分、Embedding、召回、重排、引用、评估                         | 能用数据证明检索效果变化                  |
+| 测试与安全             | 单元/集成测试、Prompt Injection、权限、密钥管理                       | 覆盖成功、失败和攻击路径                  |
+| 算法与数据结构         | LeetCode Hot 100、常见手撕题（贯穿 20 周，每周 3～5 题）              | 中等题 30 分钟内 bug-free，笔试不被卡     |
+| LLM 原理（讲得清即可） | Transformer、Attention、KV Cache、采样参数、上下文窗口、SFT/RLHF 概念 | 面试能白板讲清推理过程，不要求会训练      |
 
 ### P1：Agent 岗位的差异化能力
 
-| 技术 | 学习重点 | 建议项目 |
-| --- | --- | --- |
-| LangGraph | 显式状态、节点、条件分支、持久化、恢复、人工审批 | 复杂长流程 Agent |
-| OpenAI Agents SDK | Agent、Tool、Handoff、Guardrail、Session、Tracing | 快速理解 Agent 抽象 |
-| MCP Python SDK v2 | Server、Client、Tool、Resource、Prompt、stdio、Streamable HTTP | 企业工具接入层 |
-| Langfuse | Trace、Span、Prompt 版本、Dataset、Evaluation | 调试和评估 AI 应用 |
-| LiteLLM | 多模型统一接口、路由、预算、重试、Fallback | 模型网关和成本控制 |
-| Qdrant 或 pgvector | Filter、索引、混合检索、元数据权限 | RAG 向量层 |
-| Ragas / Promptfoo | RAG 指标、回归测试、模型和安全测试 | 自动评估流水线 |
+| 技术               | 学习重点                                                       | 建议项目            |
+| ------------------ | -------------------------------------------------------------- | ------------------- |
+| LangGraph          | 显式状态、节点、条件分支、持久化、恢复、人工审批               | 复杂长流程 Agent    |
+| OpenAI Agents SDK  | Agent、Tool、Handoff、Guardrail、Session、Tracing              | 快速理解 Agent 抽象 |
+| MCP Python SDK v2  | Server、Client、Tool、Resource、Prompt、stdio、Streamable HTTP | 企业工具接入层      |
+| Langfuse           | Trace、Span、Prompt 版本、Dataset、Evaluation                  | 调试和评估 AI 应用  |
+| LiteLLM            | 多模型统一接口、路由、预算、重试、Fallback                     | 模型网关和成本控制  |
+| Qdrant 或 pgvector | Filter、索引、混合检索、元数据权限                             | RAG 向量层          |
+| Ragas / Promptfoo  | RAG 指标、回归测试、模型和安全测试                             | 自动评估流水线      |
 
 ### P2：主线完成后再学
 
@@ -260,14 +260,14 @@ v1.0 生产化 Coding Agent
 
 ### 4.2 六个里程碑与依赖关系
 
-| 阶段 | 项目版本 | 在上一版本上新增 | 必须复用的产物 | 不要提前引入 |
-| --- | --- | --- | --- | --- |
-| 1 | `v0.1` Mini Coding Agent | 模型调用、文件读写、测试执行、Git Diff | 无 | LangChain、LangGraph、多 Agent |
-| 2 | `v0.2` Plugin Agent | 插件注册、工具 Schema、权限策略、人工确认 | v0.1 的 Tool 接口和测试 | MCP、向量库 |
-| 3 | `v0.3` Stateful Agent | LangChain Adapter、LangGraph 状态图、Checkpoint、Resume | v0.2 的工具和权限层 | 复杂多 Agent |
-| 4 | `v0.4` MCP Agent | MCP Server/Client、远程工具、会话和错误边界 | v0.3 的 State、Approval 和 Tool 测试 | RAGFlow、Dify |
-| 5 | `v0.5` Repo-Aware Agent | 代码库索引、检索、Rerank、引用和变更影响分析 | v0.4 的 Agent Loop、MCP、权限 | 微调模型 |
-| 6 | `v1.0` Production Agent | Sandbox、Langfuse、LiteLLM、自动评估、Docker 部署 | v0.5 的全部业务能力和测试集 | Kubernetes、微服务拆分 |
+| 阶段 | 项目版本                 | 在上一版本上新增                                        | 必须复用的产物                       | 不要提前引入                   |
+| ---- | ------------------------ | ------------------------------------------------------- | ------------------------------------ | ------------------------------ |
+| 1    | `v0.1` Mini Coding Agent | 模型调用、文件读写、测试执行、Git Diff                  | 无                                   | LangChain、LangGraph、多 Agent |
+| 2    | `v0.2` Plugin Agent      | 插件注册、工具 Schema、权限策略、人工确认               | v0.1 的 Tool 接口和测试              | MCP、向量库                    |
+| 3    | `v0.3` Stateful Agent    | LangChain Adapter、LangGraph 状态图、Checkpoint、Resume | v0.2 的工具和权限层                  | 复杂多 Agent                   |
+| 4    | `v0.4` MCP Agent         | MCP Server/Client、远程工具、会话和错误边界             | v0.3 的 State、Approval 和 Tool 测试 | RAGFlow、Dify                  |
+| 5    | `v0.5` Repo-Aware Agent  | 代码库索引、检索、Rerank、引用和变更影响分析            | v0.4 的 Agent Loop、MCP、权限        | 微调模型                       |
+| 6    | `v1.0` Production Agent  | Sandbox、Langfuse、LiteLLM、自动评估、Docker 部署       | v0.5 的全部业务能力和测试集          | Kubernetes、微服务拆分         |
 
 对照项目怎么用（先读、再仿、最后才是自己写）：
 
@@ -283,14 +283,14 @@ v1.0 生产化 Coding Agent
 
 ### 4.3 通过验收时，回答问题而不是列框架
 
-| 里程碑 | 必须回答的问题 |
-| --- | --- |
-| v0.1 | Agent 如何读懂代码、修改文件、运行测试？ |
-| v0.2 | 哪些工具允许执行？谁能批准高风险操作？ |
-| v0.3 | 进程重启后如何恢复？失败如何重试而不重复写入？ |
-| v0.4 | 远程工具如何认证？MCP 是否绕过了业务权限？ |
-| v0.5 | Agent 如何找到正确代码？回答如何引用证据？ |
-| v1.0 | 如何知道系统变差了？一次任务成本多少？如何安全部署？ |
+| 里程碑 | 必须回答的问题                                       |
+| ------ | ---------------------------------------------------- |
+| v0.1   | Agent 如何读懂代码、修改文件、运行测试？             |
+| v0.2   | 哪些工具允许执行？谁能批准高风险操作？               |
+| v0.3   | 进程重启后如何恢复？失败如何重试而不重复写入？       |
+| v0.4   | 远程工具如何认证？MCP 是否绕过了业务权限？           |
+| v0.5   | Agent 如何找到正确代码？回答如何引用证据？           |
+| v1.0   | 如何知道系统变差了？一次任务成本多少？如何安全部署？ |
 
 如果当前阶段的问题还回答不了，就不要进入下一阶段。这样 LangChain、LangGraph、MCP 和 Langfuse 都会成为解决实际问题的工具，而不是需要背诵的框架名。
 
@@ -298,13 +298,13 @@ v1.0 生产化 Coding Agent
 
 ### 项目主线总览
 
-| 阶段 | 主项目 | 直接学习的开源项目 | 阶段产出 |
-| --- | --- | --- | --- |
-| 第 1 个月 | `agent-lab v0.1 → v0.2` | learn-claude-code、Aider、DeepSeek Harness、Claude Code/OpenCode | 最小 Agent + 插件 + 权限 |
-| 第 2 个月 | `agent-lab v0.3 → v0.4` | LangChain、LangGraph、MCP SDK | 同一批工具的状态化和标准化 |
-| 第 3 个月 | `agent-lab v0.5` | LangChain/LlamaIndex、Qdrant、Ragas | 在 Coding Agent 上增加代码库 RAG |
-| 第 4 个月 | `agent-lab v1.0-rc` | OpenHands、OpenCode、Langfuse、LiteLLM | Sandbox、事件流、多模型、Trace 和成本控制 |
-| 第 5 个月 | `agent-lab v1.0` | 前面所有阶段 + Dify/RAGFlow 架构速读 | 可部署、可评估、可演示的完整项目 |
+| 阶段      | 主项目                  | 直接学习的开源项目                                               | 阶段产出                                  |
+| --------- | ----------------------- | ---------------------------------------------------------------- | ----------------------------------------- |
+| 第 1 个月 | `agent-lab v0.1 → v0.2` | learn-claude-code、Aider、DeepSeek Harness、Claude Code/OpenCode | 最小 Agent + 插件 + 权限                  |
+| 第 2 个月 | `agent-lab v0.3 → v0.4` | LangChain、LangGraph、MCP SDK                                    | 同一批工具的状态化和标准化                |
+| 第 3 个月 | `agent-lab v0.5`        | LangChain/LlamaIndex、Qdrant、Ragas                              | 在 Coding Agent 上增加代码库 RAG          |
+| 第 4 个月 | `agent-lab v1.0-rc`     | OpenHands、OpenCode、Langfuse、LiteLLM                           | Sandbox、事件流、多模型、Trace 和成本控制 |
+| 第 5 个月 | `agent-lab v1.0`        | 前面所有阶段 + Dify/RAGFlow 架构速读                             | 可部署、可评估、可演示的完整项目          |
 
 ### 第 1 个月：先做出 Mini Coding Agent
 
@@ -379,27 +379,27 @@ v1.0 生产化 Coding Agent
 
 ## 六、项目遇到问题时的技术补充规划
 
-| 项目遇到的问题 | 立刻补的技术 | 不需要提前学的内容 |
-| --- | --- | --- |
-| 工具调用失败 | JSON Schema、Pydantic、重试、超时 | 深入训练模型 |
-| Agent 状态混乱 | 状态机、LangGraph、持久化、幂等 | 多 Agent 群舞 |
-| RAG 找不到内容 | 切分、Embedding、BM25、Rerank、评估 | 微调大模型 |
-| 服务卡顿 | asyncio、并发限制、缓存、队列、P95 | Kubernetes 全套 |
-| 命令执行危险 | Sandbox、Allowlist、权限、审计 | 复杂多租户架构 |
-| 费用不可控 | LiteLLM、模型路由、预算、Token 统计 | 自建 GPU 集群 |
-| 问题无法定位 | Langfuse、Trace、结构化日志、回归测试 | 复杂监控平台 |
+| 项目遇到的问题 | 立刻补的技术                          | 不需要提前学的内容 |
+| -------------- | ------------------------------------- | ------------------ |
+| 工具调用失败   | JSON Schema、Pydantic、重试、超时     | 深入训练模型       |
+| Agent 状态混乱 | 状态机、LangGraph、持久化、幂等       | 多 Agent 群舞      |
+| RAG 找不到内容 | 切分、Embedding、BM25、Rerank、评估   | 微调大模型         |
+| 服务卡顿       | asyncio、并发限制、缓存、队列、P95    | Kubernetes 全套    |
+| 命令执行危险   | Sandbox、Allowlist、权限、审计        | 复杂多租户架构     |
+| 费用不可控     | LiteLLM、模型路由、预算、Token 统计   | 自建 GPU 集群      |
+| 问题无法定位   | Langfuse、Trace、结构化日志、回归测试 | 复杂监控平台       |
 
 ## 七、每周时间安排
 
 以每周 22 小时为例：
 
-| 时间 | 任务 | 时长 |
-| --- | --- | ---: |
-| 周一至周四 | 文档、原理、最小实验 | 8 小时 |
-| 周五 | 测试、重构、技术笔记 | 2 小时 |
-| 周六 | 主项目开发 | 6 小时 |
-| 周日 | 开发、评估和复盘 | 4 小时 |
-| 零散时间 | 源码、Issue、英文文档 | 2 小时 |
+| 时间       | 任务                  |   时长 |
+| ---------- | --------------------- | -----: |
+| 周一至周四 | 文档、原理、最小实验  | 8 小时 |
+| 周五       | 测试、重构、技术笔记  | 2 小时 |
+| 周六       | 主项目开发            | 6 小时 |
+| 周日       | 开发、评估和复盘      | 4 小时 |
+| 零散时间   | 源码、Issue、英文文档 | 2 小时 |
 
 每周日复盘四个问题：本周可运行成果是什么？哪个指标变好或变差？一个可复现失败是什么？哪些内容只是看过但没有代码验证？
 
@@ -407,17 +407,17 @@ v1.0 生产化 Coding Agent
 
 每个重点项目按 100 分评分，低于 75 分不要急着开始新项目。
 
-| 维度 | 分值 | 及格标准 |
-| --- | ---: | --- |
-| 业务问题与范围 | 10 | 用户、目标和非目标清晰 |
-| 架构与代码 | 15 | 分层合理、类型清晰、无成片重复 |
-| 核心功能 | 15 | 主流程稳定可复现 |
-| 测试 | 15 | 核心模块和失败路径有测试 |
-| AI 评估 | 15 | 固定 Dataset、指标、错误分析 |
-| 可靠性与安全 | 10 | 超时、重试、权限、审批、幂等 |
-| 可观测性 | 8 | Trace、日志、延迟、Token、错误 |
-| 部署与复现 | 7 | Docker/文档可在新环境运行 |
-| README 与演示 | 5 | 架构、结果、限制表达清楚 |
+| 维度           | 分值 | 及格标准                       |
+| -------------- | ---: | ------------------------------ |
+| 业务问题与范围 |   10 | 用户、目标和非目标清晰         |
+| 架构与代码     |   15 | 分层合理、类型清晰、无成片重复 |
+| 核心功能       |   15 | 主流程稳定可复现               |
+| 测试           |   15 | 核心模块和失败路径有测试       |
+| AI 评估        |   15 | 固定 Dataset、指标、错误分析   |
+| 可靠性与安全   |   10 | 超时、重试、权限、审批、幂等   |
+| 可观测性       |    8 | Trace、日志、延迟、Token、错误 |
+| 部署与复现     |    7 | Docker/文档可在新环境运行      |
+| README 与演示  |    5 | 架构、结果、限制表达清楚       |
 
 ## 九、暂时不要投入过多时间的内容
 
@@ -446,16 +446,16 @@ v1.0 生产化 Coding Agent
 
 ### JD 验证了计划的哪些设计
 
-| JD 高频要求 | 计划中的对应 |
-| --- | --- |
-| Agentic 工作流工程化落地（美团、淘天） | v0.1→v1.0 整条主线 |
-| Agent 评估体系（美团、阿里评测岗） | 第 11、16、19 周的评估流水线，200+ 条评估集 |
-| RAG 系统工程（腾讯 WXG、快手） | 第 3 个月整月 + Hybrid Search/Rerank |
-| Memory/上下文压缩（字节 Aime） | v0.3 State 设计；learn-claude-code 的上下文压缩课 + Agent Loop 的上下文组装 |
-| Skill 体系与插件化生态（字节 Aime） | learn-claude-code 的技能加载课 + v0.2 插件层 + Claude Code 扩展机制对照 |
-| MCP/工具生态（多家） | 第 7、14 周，MCP SDK v2 |
-| 沙盒校验、权限隔离（多家安全治理方向） | v0.2 权限层 + 第 14 周安全周 |
-| GitHub 开源项目/技术博客加分（多家明示） | 单仓库作品 + 第 19 周开源 PR + 公开的技术博客 |
+| JD 高频要求                              | 计划中的对应                                                                |
+| ---------------------------------------- | --------------------------------------------------------------------------- |
+| Agentic 工作流工程化落地（美团、淘天）   | v0.1→v1.0 整条主线                                                          |
+| Agent 评估体系（美团、阿里评测岗）       | 第 11、16、19 周的评估流水线，200+ 条评估集                                 |
+| RAG 系统工程（腾讯 WXG、快手）           | 第 3 个月整月 + Hybrid Search/Rerank                                        |
+| Memory/上下文压缩（字节 Aime）           | v0.3 State 设计；learn-claude-code 的上下文压缩课 + Agent Loop 的上下文组装 |
+| Skill 体系与插件化生态（字节 Aime）      | learn-claude-code 的技能加载课 + v0.2 插件层 + Claude Code 扩展机制对照     |
+| MCP/工具生态（多家）                     | 第 7、14 周，MCP SDK v2                                                     |
+| 沙盒校验、权限隔离（多家安全治理方向）   | v0.2 权限层 + 第 14 周安全周                                                |
+| GitHub 开源项目/技术博客加分（多家明示） | 单仓库作品 + 第 19 周开源 PR + 公开的技术博客                               |
 
 ### JD 暴露的三个短板（已并入计划）
 
@@ -499,4 +499,4 @@ v1.0 生产化 Coding Agent
 
 ---
 
-*本文初版写于 2026-08-17，2026-08-20 修订。文中所有开源项目链接、版本号、项目状态以及字节/腾讯/阿里/美团/快手/蚂蚁的校招 JD 信息均在发布当日核实。如果在几个月后读到这篇文章，请注意 AI 工程领域迭代极快——DeepSeek Harness 尚在预览期、MCP 规范每年多次修订、各厂招聘批次随时开启，动手前请再次确认官方文档和招聘官网。*
+_本文初版写于 2026-08-17，2026-08-20 修订。文中所有开源项目链接、版本号、项目状态以及字节/腾讯/阿里/美团/快手/蚂蚁的校招 JD 信息均在发布当日核实。如果在几个月后读到这篇文章，请注意 AI 工程领域迭代极快——DeepSeek Harness 尚在预览期、MCP 规范每年多次修订、各厂招聘批次随时开启，动手前请再次确认官方文档和招聘官网。_
