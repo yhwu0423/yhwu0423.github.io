@@ -1,63 +1,29 @@
-[Hux Blog](https://huangxuan.me)
+[wyh的博客](https://yhwu0423.github.io)
 ================================
 
-> I never expected this to become popular.
+我的个人博客，记录 AI Agent、后端开发与学习笔记。
 
-![](http://huangxuan.me/img/blog-desktop.jpg)
+本博客基于 [Huxpro/huxpro.github.io](https://github.com/Huxpro/huxpro.github.io) 模板搭建，感谢 Hux 的开源工作。
 
-
-[User Manual 👉](_doc/Manual.md)
+[模板使用手册 👉](_doc/Manual.md)
 --------------------------------------------------
 
-### Getting Started
+### 本地运行
 
-1. You will need [Ruby](https://www.ruby-lang.org/en/) and [Bundler](https://bundler.io/) to use [Jekyll](https://jekyllrb.com/). Following [Using Jekyll with Bundler](https://jekyllrb.com/tutorials/using-jekyll-with-bundler/) to fullfill the enviromental requirement.
+1. 需要 [Ruby](https://www.ruby-lang.org/en/) 和 [Bundler](https://bundler.io/)，参考 [Using Jekyll with Bundler](https://jekyllrb.com/tutorials/using-jekyll-with-bundler/) 配置环境。
 
-2. Installed dependencies in the `Gemfile`:
-
-```sh
-$ bundle install 
-```
-
-3. Serve the website (`localhost:4000` by default):
+2. 安装 `Gemfile` 中的依赖：
 
 ```sh
-$ bundle exec jekyll serve  # alternatively, npm start
+$ bundle install
 ```
 
-### Development (Build From Source)
+3. 本地预览：
 
-To modify the theme, you will need [Grunt](https://gruntjs.com/). There are numbers of tasks you can find in the `Gruntfile.js`, includes minifing JavaScript, compiling `.less` to `.css`, adding banners to keep the Apache 2.0 license intact, watching for changes, etc. 
+```sh
+$ bundle exec jekyll serve
+```
 
-Yes, they were inherited and are extremely old-fashioned. There is no modularization and transpilation, etc.
+### 写文章
 
-Critical Jekyll-related code are located in `_include/` and `_layouts/`. Most of them are [Liquid](https://github.com/Shopify/liquid/wiki) templates.
-
-This theme uses the default code syntax highlighter of jekyll, [Rouge](http://rouge.jneen.net/), which is compatible with Pygments theme so just pick any pygments theme css (e.g. from [here](http://jwarby.github.io/jekyll-pygments-themes/languages/javascript.html) and replace the content of `highlight.less`.
-
-
-### Interesting to know more? Checkout the [full user manual](_doc/Manual.md)!
-
-
-Other Resources
----------------
-
-Ports
-- [**Hexo**](https://github.com/Kaijun/hexo-theme-huxblog) by @kaijun
-- [**React-SSR**](https://github.com/LucasIcarus/huxpro.github.io/tree/ssr) by @LucasIcarus
-
-[Starter/Boilerplate](https://github.com/huxpro/huxblog-boilerplate)
-- Out of date. Helps wanted for updating it on par with the main repo
-
-Translation
-- [🇨🇳  中文文档（有点过时）](https://github.com/Huxpro/huxpro.github.io/blob/master/_doc/README.zh.md)
-
-
-License
--------
-
-Apache License 2.0.
-Copyright (c) 2015-present Huxpro
-
-Hux Blog is derived from [Clean Blog Jekyll Theme (MIT License)](https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll/)
-Copyright (c) 2013-2016 Blackrock Digital LLC.
+在 `_posts/` 下新建 `YYYY-MM-DD-title.md` 文件，参考已有文章的 front matter 格式即可。

@@ -1,7 +1,7 @@
 {
-  "name": "Hux Blog",
-  "short_name": "Hux Blog",
-  "description": "About an engineer & designer who loves web.",
+  "name": "wyh的博客",
+  "short_name": "wyh Blog",
+  "description": "wyh 的个人博客：AI Agent、后端开发与学习笔记。",
   "icons": [{
     "src": "icons/128.png",
     "sizes": "128x128",
