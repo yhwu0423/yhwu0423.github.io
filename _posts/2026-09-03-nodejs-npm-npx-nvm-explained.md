@@ -54,10 +54,33 @@ JavaScript 天生只能跑在浏览器里（由浏览器内核的 JS 引擎执�
 
 **Node.js 做的事情**：把 Chrome 的 V8 引擎单独抽出来，再配上一套操作系统能力的 API（读写文件 `fs`、网络 `http/net`、进程 `process` 等），让 JavaScript 挣脱浏览器，**成为一种能写服务器、写命令行工具、写桌面软件的通用语言**。
 
-所以 Node.js 是一个**运行时（Runtime）**，不是编程语言，也不是框架。它的典型用途：
+所以 Node.js 是一个**运行时（Runtime）**，不是编程语言，也不是框架。
+
+**"运行时"是什么？** 很多人会以为"运行时 = 把代码翻译成机器码的翻译器"，其实翻译只是它的第一份工作。跟着一条真实命令走一遍就懂了。假设 `app.js` 的内容是：
+
+```js
+const fs = require('fs');
+console.log(fs.readFileSync('a.txt', 'utf8'));
+```
+
+在终端敲 `node app.js` 后，真实发生的事情是：
+
+1. Windows 启动 `node.exe`——它才是真正的程序（C++ 写的、编译好的）；你的 `app.js` 此刻只是一个**文本文件**，CPU 执行不了"文字"；
+2. node.exe 里的 **V8 引擎**读出这段文字，现场编译成机器码交给 CPU——"翻译"只发生在这一步，译完它并不下班；
+3. 执行到 `fs.readFileSync('a.txt')` 时：JS 语言本身**根本不会读文件**（语言规范里就没有这个功能），是 Node.js 的 `fs` 模块替你调用 Windows 的系统接口，把文件从硬盘读出来交还给代码；
+4. 运行期间变量占用的内存，由 V8 的**垃圾回收器**自动释放，不用你管；
+5. 如果代码里有 `setTimeout`、HTTP 服务器，Node 的**事件循环**会一直运行不退出，盯着"定时器到点没、网络包来了没"，到点就调用你的回调函数。
+
+看到这里可能有个疑问：**既然都翻译成机器码了，CPU 直接执行不就行了，为什么 node 还必须在场？** 因为翻译是完全的，但翻译出来的机器码**不是自给自足的**——`fs.readFileSync('a.txt')` 编译出来的机器码，效果相当于"调用 node.exe 内部的读文件函数，参数是 'a.txt'"：真正读文件的活是 node 的 C++ 代码干的，你的机器码里到处是这样的"跳回运行时"调用，把 node 删掉这些调用就全部落空。从 CPU 的视角看，它从头到尾执行的进程都是 **node.exe**：你的代码被编译后只是这个进程里的一段，执行几行就会跳回 node 自己的代码（读文件、分配内存、等待事件），垃圾回收甚至会在中途暂停你的代码去做清理。换句话说，不是"翻译完交给 CPU，node 就下班了"，而是你的机器码根本离不开这个进程。（想让代码脱离 node 独立运行也行，办法是把整个运行时打包进 exe——claude.exe 那 218 MB 的大头就是它。）
+
+所以：**运行时 = 翻译官（编译机器码）+ 全程管家（系统调用、内存回收、事件调度）**，从程序启动到退出全程在线服务。
+
+对比 C 语言就更清楚了：C 代码在**运行之前**就被编译器一次性翻译成机器码、生成 exe，双击直接跑，操作系统直接伺候它，不需要专门的运行时。你可以亲手验证 JS 的处境——双击一个 `.js` 文件，Windows 只会问"用什么程序打开"，因为操作系统根本不认识 JS 文本，必须靠 `node` 这个程序全程伺候。
+
+最后呼应三个词的区别：JavaScript 是**语言**（纸面上的语法规则）；浏览器和 Node.js 是两种**运行时**（同一段 JS，在浏览器里能操作网页、在 Node 里能读写文件——语言相同，环境不同，能干的活就不同）；Express、Vue 这类**框架**则是运行时之上的"半成品结构"，你往里填业务逻辑。上一节的 claude.exe 不需要装 Node，正是因为运行时被一起打包进了 exe。它的典型用途：
 
 - **Web 后端**：Express/Koa/NestJS 等框架写接口服务；
-- **命令行工具**：你在服务器上用的 Codex CLI、Claude Code，本质都是 Node.js 写的 npm 全局包；
+- **命令行工具**：你在服务器上用的 Codex CLI、Claude Code，都是用 JavaScript/TypeScript 编写、以 npm 包形式分发的工具；
 - **前端构建工具链**：Vite、Webpack、TypeScript 编译器都运行在 Node.js 上——这就是为什么写前端必须先装 Node，哪怕你的代码最终跑在浏览器里；
 - **桌面应用**：VS Code、Discord 用的 Electron，内核就是 Node.js + Chromium。
 
@@ -95,18 +118,22 @@ npm uninstall lodash   # 卸载
 - **库（library）**：给别的代码调用的"零件"，自己不能单独运行，如 lodash、react——npm 上绝大多数包是这种；
 - **CLI 工具/应用**：带可执行入口的完整程序，最接近你理解的"软件"。Claude Code、Codex、create-vite 都是这种。
 
-**2. `npm install` 就是在下载这个软件吗？** 对，准确说它做了三件事：从 npm 仓库下载包的压缩包（.tgz）→ 解压到 node_modules（全局安装则解压到全局目录）→ 读取 package.json 里的 `bin` 字段（Claude Code 声明了 `"claude": "./cli.js"`），在 PATH 目录里建立一个名叫 `claude` 的命令入口（Windows 上是个 `claude.cmd` 小脚本）。
+**2. `npm install` 就是在下载这个软件吗？** 对，准确说它做了三件事：从 npm 仓库下载包的压缩包（.tgz）→ 解压到 node_modules（全局安装则解压到全局目录）→ 读取 package.json 里的 `bin` 字段（声明了命令名到入口文件的映射），在 PATH 目录里建立对应的命令入口（Windows 上是个 `.cmd` 小脚本）。
 
-**3. 跑起来的是 Node.js 吗？** 对。你在终端敲 `claude` 时，完整链路是：
+**3. 跑起来的一定是 Node.js 吗？** 对大多数 CLI 包，是的。以一个典型工具 `mytool` 为例，你在终端敲 `mytool` 时的完整链路：
 
 ```text
-claude 命令
-  → 系统沿 PATH 找到 claude.cmd（命令入口脚本）
+mytool 命令
+  → 系统沿 PATH 找到 mytool.cmd（命令入口脚本）
     → 脚本内部调用 node <全局目录>/.../cli.js
-      → Node.js 执行 Claude Code 的代码
+      → Node.js 执行这个包的代码
 ```
 
-所以"用 npm 下载软件、用 Node.js 跑起来"的理解基本正确，中间只多一步"建立命令入口"。这也解释了为什么装 Claude Code 之前必须先装 Node.js——没有发动机，零件再全也跑不动。
+所以"用 npm 下载软件、用 Node.js 跑起来"的理解基本正确，中间只多一步"建立命令入口"。
+
+**但 Claude Code（2.x）恰恰是个著名的例外，而且很能说明问题。** 它已经从"JS 分发"改成了**二进制分发**，我在自己电脑上查证过安装目录：package.json 里 `bin` 直接指向一个 **218 MB 的 `claude.exe`**，`claude.cmd` 里没有任何 node 调用，直接运行这个 exe。它的 npm 包其实只是个**引导安装器**：安装时的 `postinstall` 脚本（install.cjs）按你的平台，从 `optionalDependencies` 列出的平台专属包（`claude-code-win32-x64`、`darwin-arm64` 等共 8 个）中取出对应的原生二进制放到 bin/ 下。这个 exe 内部已把 JS 代码和 JS 运行时一起编译成单文件原生程序（Bun 的单文件编译），所以**运行时完全不需要 Node.js**——只有走 npm 安装这个过程才用到 node（npm 本身和引导脚本都靠它运行）。官方也顺势提供了完全不碰 npm 的原生安装脚本。esbuild、swc、Biome 等工具用的也是同款分发模式。
+
+这个例外的意义在于：**npm 只是一个"代码/文件分发渠道"，包里装的可以是 JS，也可以是编译好的二进制**——不要默认"npm 包 = 跑在 Node.js 上的 JS"。
 
 ### 一个 npm 包是如何被开发出来的？
 
@@ -114,7 +141,7 @@ claude 命令
 
 1. **初始化**：`npm init` 生成 package.json，填写包名、版本号、入口文件；
 2. **写代码 + 声明依赖**：用 JS/TS 实现功能，用到别人的包就写进 `dependencies`（终端界面、网络请求、文件处理……）。npm 包都是"站在巨人肩膀上"，一个工具往往又依赖几十上百个包，安装时会被递归地一起拉下来；
-3. **声明命令入口**：在 package.json 里写 `bin` 字段，如 `"bin": { "claude": "./cli.js" }`，并在 cli.js 第一行写上 `#!/usr/bin/env node`（告诉操作系统"请用 node 执行我"）——上面那条运行链路能成立，靠的就是这两行声明；
+3. **声明命令入口**：在 package.json 里写 `bin` 字段，如 `"bin": { "mytool": "./cli.js" }`，并在 cli.js 第一行写上 `#!/usr/bin/env node`（告诉操作系统"请用 node 执行我"）——上面那条运行链路能成立，靠的就是这两行声明；
 4. **本地调试**：`npm link` 把开发中的包临时链接到全局，模拟"已安装"的状态边改边测；
 5. **发布**：在 npmjs.com 注册账号 → `npm login` → `npm publish`。几秒后全世界都能 `npm install` 到这个包，npmjs.com 上也会生成它的主页（版本历史、周下载量等，可以搜 `@anthropic-ai/claude-code` 实地看看）；
 6. **迭代**：修 bug、加功能 → 按语义化版本规则升级版本号 → 再次 publish；用户端 `npm update -g` 即可升级。
