@@ -1,0 +1,148 @@
+# 「就业调研」页面数据
+# 更新方法：改这一个文件即可，页面（jobs.html）自动重新渲染
+# 字段说明：
+#   updated/audience  调研时间与面向人群，显示在页面顶部
+#   salary            校招年包档位（爆料/公开口径，总包≈base×月数+签字费+股票）
+#   salary_note       薪资的出处/口径说明
+#   headcount         需求量与岗位量
+#   popularity        热门程度
+#   difficulty        入行难度 1-5（渲染为星级）
+#   value             性价比评分 1-5（总览表排序依据，可为 .5）
+#   tech_stack        技术栈标签
+#   learning          要学什么
+#   notes             大厂校招备注（含出处）
+
+updated: "2026-10"
+audience: "2027 届校招（2026 年秋招季）"
+
+jobs:
+  - name: "后端开发"
+    salary: "白菜 35–40 万 · SP 40–50 万 · SSP 50 万+"
+    salary_note: "Offershow/牛客爆料口径：腾讯白菜 24–26K×15 薪，字节 25–26K×15 薪，阿里 18–22K×16 薪 + 补贴"
+    headcount: "大 —— 应用开发类是需求量最大的技术岗（前程无忧报告）"
+    popularity: "高 —— 主航道，投递也最卷"
+    difficulty: 4
+    value: 4.5
+    tech_stack: ["Java / Go", "MySQL", "Redis", "消息队列", "Linux", "分布式基础"]
+    learning:
+      - "语言任选 Java 或 Go 深入一门"
+      - "计算机网络 / 操作系统 / 数据库三大件（八股核心）"
+      - "两个能讲清架构取舍的项目（秒杀、短链、IM 等）"
+      - "LeetCode 300+，笔试必过"
+      - "一段大厂实习是分水岭，尽早投递"
+    notes: "hc 最多、容错最高、进可攻退可守的基本盘；美团白菜 21–23K×15.5 薪略低一档。"
+
+  - name: "算法工程师（AI / 大模型）"
+    salary: "白菜 40–50 万 · SP 50–60 万 · SSP 60 万+（顶尖人才计划另计）"
+    salary_note: "前程无忧：2027 届大模型算法岗月薪中位数 27329 元，居所有校招岗位之首；顶尖者年包 50 万+"
+    headcount: "中 —— AI 校招岗位量同比 +47.3%（脉脉），但集中在头部大厂与 AI 独角兽"
+    popularity: "最高 —— 简历密度最大的方向"
+    difficulty: 5
+    value: 4
+    tech_stack: ["Python", "PyTorch", "Transformer", "LLM 微调 / RAG / Agent", "线性代数与概率论"]
+    learning:
+      - "系统学深度学习（李宏毅、CS231n）"
+      - "精读并复现 Transformer / BERT / GPT 等核心论文"
+      - "一段大模型相关实习或高质量开源项目"
+      - "LeetCode 200+（算法岗笔试一样要过）"
+    notes: "腾讯青云计划、华为天才少年（最高 201 万）等顶尖项目薪资不设上限，但普遍卡顶会论文或顶尖学历，二八分化严重。"
+
+  - name: "测试开发"
+    salary: "白菜 25–35 万"
+    salary_note: "牛客/Offershow 爆料口径，整体比后端低一档"
+    headcount: "中小 —— 但供不应求，有报道称 2026 秋招供需比约 1:8（掘金）"
+    popularity: "低 —— 关注度不高，反而是洼地"
+    difficulty: 2
+    value: 4
+    tech_stack: ["Python / Java", "自动化测试框架", "CI / CD", "质量效能平台"]
+    learning:
+      - "一门语言 + 常见自动化框架（Selenium / Pytest 等）"
+      - "接口测试、性能测试、CI 流水线实战"
+      - "计算机基础八股要求低于后端，但仍要考"
+    notes: "门槛与面试强度低于后端，进大厂的'性价比路线'；注意区分纯功能测试（天花板低），要投'测试开发/质量效能'方向。"
+
+  - name: "客户端开发（Android / iOS / 桌面）"
+    salary: "白菜 30–38 万 · SP 40 万±"
+    salary_note: "Offershow 爆料口径，与后端接近或略低"
+    headcount: "中小 —— 岗位量明显少于后端"
+    popularity: "中低 —— 降温多年，简历池也小"
+    difficulty: 3
+    value: 3.5
+    tech_stack: ["Kotlin / Swift", "C++（桌面端）", "系统原理", "跨端框架（RN / Flutter）"]
+    learning:
+      - "选一端深入（Android 推荐 Kotlin）"
+      - "性能优化、启动优化、内存治理等项目亮点"
+      - "八股与笔试与后端同标准"
+    notes: "岗位少但竞争也小，面试强度低于后端；可选项少是主要风险，建议同时保留后端能力作备胎。"
+
+  - name: "前端开发"
+    salary: "白菜 28–38 万"
+    salary_note: "爆料口径约 18–25K×15–16 薪"
+    headcount: "中"
+    popularity: "中"
+    difficulty: 3
+    value: 3.5
+    tech_stack: ["TypeScript", "React / Vue", "工程化（Vite / webpack）", "Node.js 基础"]
+    learning:
+      - "JS/TS 深入（事件循环、异步、浏览器原理）"
+      - "一个主流框架源码级理解"
+      - "AI 应用方向的前端/全栈项目加分"
+    notes: "AI 应用爆发带来前端/全栈需求回流；纯切图岗在萎缩，工程化和全栈能力是关键差异化。"
+
+  - name: "数据开发 / 大数据"
+    salary: "白菜 30–40 万"
+    salary_note: "爆料口径，与后端接近"
+    headcount: "中 —— 需求稳定"
+    popularity: "中"
+    difficulty: 3
+    value: 3.5
+    tech_stack: ["SQL", "Spark / Flink", "数仓建模", "Python"]
+    learning:
+      - "SQL 熟练到能写复杂窗口函数"
+      - "Spark/Flink 原理与调优"
+      - "一个离线 + 一个实时数仓项目"
+    notes: "注意与'数据分析师'区分：开发岗要笔试写代码，分析师偏业务 SQL；AI 热潮下特征工程/数据管线需求看涨。"
+
+  - name: "嵌入式 / 芯片"
+    salary: "白菜 20–35 万（硬件厂与芯片厂差异较大）"
+    salary_note: "爆料口径；华为、大疆、芯片厂各有档位"
+    headcount: "中 —— 硬科技热度上升（脉脉：芯片半导体企业热搜度直逼互联网大厂）"
+    popularity: "升温中"
+    difficulty: 4
+    value: 3.5
+    tech_stack: ["C / C++", "单片机 / RTOS", "Linux 驱动", "数电模电"]
+    learning:
+      - "C 语言深入 + 计算机组成原理"
+      - "STM32 / Linux 驱动项目"
+      - "关注车企智驾、机器人、芯片三条风口线"
+    notes: "薪资上限低于互联网，但行业周期稳、中年危机小；智驾/机器人方向近年薪资明显上探。"
+
+  - name: "运维 / SRE"
+    salary: "白菜 25–35 万"
+    salary_note: "爆料口径"
+    headcount: "小 —— 大厂少量 hc，稳定"
+    popularity: "低"
+    difficulty: 3
+    value: 3
+    tech_stack: ["Linux", "Kubernetes / Docker", "监控与可观测性", "Shell / Python"]
+    learning:
+      - "Linux 深入（性能分析、网络排障）"
+      - "K8s 全家桶与 IaC（Terraform 等）"
+      - "SRE 方法论（SLO、容量规划、故障演练）"
+    notes: "岗位少而稳定，有 on-call；云原生方向比传统运维前景好。"
+
+sources:
+  - name: "前程无忧《2027 届校招 AI 人才市场洞察》（经上观新闻报道）"
+    url: "https://www.jfdaily.com/news/detail?id=1165472"
+  - name: "脉脉高聘《抢占 AI 新生代——2026 年名校生求职招聘洞察》（2025-07，经雪球/新浪科技报道）"
+    url: "https://xueqiu.com/3338215700/398145193"
+  - name: "腾讯 2027 校招启动报道（最高年薪 68 万，网易新闻）"
+    url: "https://www.163.com/dy/article/L44P6F9E05149PH8.html"
+  - name: "掘金：测试开发岗供需比 1:8——2026 秋招的真实温度"
+    url: "https://juejin.cn/post/7678380742906200079"
+  - name: "代码随想录：2026 届计算机应届毕业生薪资盘点"
+    url: "https://programmercarl.com/other/2025salary.html"
+  - name: "牛客网校招薪资讨论区（各厂白菜/SP/SSP 爆料）"
+    url: "https://www.nowcoder.com/"
+  - name: "Offershow 校招 offer 爆料小程序/网站"
+    url: "https://www.offershow.net/"

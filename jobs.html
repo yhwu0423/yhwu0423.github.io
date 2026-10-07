@@ -1,0 +1,136 @@
+---
+layout: page
+title: "就业调研"
+description: "CS 技术岗校招性价比调研：薪资、需求、热度、难度与技术栈"
+header-style: text
+---
+
+{% assign data = site.data.jobs %}
+{% assign sorted_jobs = data.jobs | sort: "value" | reverse %}
+
+<style>
+  .jobs-meta {
+    background: #f7f7f9;
+    border-left: 4px solid #0085a1;
+    padding: 14px 18px;
+    margin-bottom: 24px;
+    border-radius: 0 6px 6px 0;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .jobs-meta strong { color: #0085a1; }
+  .job-table { font-size: 14px; }
+  .job-table th { white-space: nowrap; }
+  .job-card {
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .job-card h3 {
+    margin: 0 0 4px;
+    font-size: 19px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .value-badge {
+    font-size: 13px;
+    background: #0085a1;
+    color: #fff;
+    border-radius: 12px;
+    padding: 2px 12px;
+    white-space: nowrap;
+  }
+  .job-salary { font-size: 15px; font-weight: 700; color: #d35400; margin: 6px 0 2px; }
+  .job-salary-note { font-size: 12px; color: #999; margin-bottom: 10px; }
+  .job-row { font-size: 14px; margin: 4px 0; }
+  .job-row b { color: #333; }
+  .star { color: #ddd; font-size: 15px; }
+  .star.on { color: #f0a500; }
+  .chip {
+    display: inline-block;
+    background: #eef6f8;
+    color: #0085a1;
+    border-radius: 4px;
+    padding: 1px 8px;
+    margin: 2px 4px 2px 0;
+    font-size: 12.5px;
+  }
+  .job-card ul { margin: 6px 0; padding-left: 20px; font-size: 14px; }
+  .job-card ul li { margin: 2px 0; }
+  .job-notes {
+    background: #fffaf0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13.5px;
+    margin-top: 10px;
+  }
+  .job-sources { font-size: 13.5px; }
+  .job-sources li { margin: 4px 0; }
+</style>
+
+<div class="jobs-meta">
+  <strong>调研时间：{{ data.updated }}</strong> ｜ 面向：{{ data.audience }}<br>
+  口径说明：薪资为校招<strong>年包</strong>（base×月数 + 签字费 + 股票），来自 Offershow、牛客网爆料及公开招聘报告，为区间参考而非承诺；白菜 / SP / SSP 是校招 offer 的三个常见档位。本页会不定期更新，文末附全部数据来源。
+</div>
+
+<h2>性价比总览</h2>
+
+<table class="table table-striped job-table">
+  <thead>
+    <tr>
+      <th>岗位</th>
+      <th>薪资（年包）</th>
+      <th>需求</th>
+      <th>难度</th>
+      <th>性价比</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for job in sorted_jobs %}
+    <tr>
+      <td><a href="#job-{{ forloop.index }}">{{ job.name }}</a></td>
+      <td>{{ job.salary | split: "·" | first | strip }}</td>
+      <td>{{ job.headcount | split: " " | first }}</td>
+      <td>{% for i in (1..5) %}{% if i <= job.difficulty %}<span class="star on">★</span>{% else %}<span class="star">★</span>{% endif %}{% endfor %}</td>
+      <td><strong>{{ job.value }}</strong></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>岗位详情</h2>
+
+{% for job in sorted_jobs %}
+<div class="job-card" id="job-{{ forloop.index }}">
+  <h3>{{ job.name }} <span class="value-badge">性价比 {{ job.value }}</span></h3>
+
+  <div class="job-salary">{{ job.salary }}</div>
+  <div class="job-salary-note">{{ job.salary_note }}</div>
+
+  <div class="job-row"><b>需求量：</b>{{ job.headcount }}</div>
+  <div class="job-row"><b>热门程度：</b>{{ job.popularity }}</div>
+  <div class="job-row"><b>入行难度：</b>{% for i in (1..5) %}{% if i <= job.difficulty %}<span class="star on">★</span>{% else %}<span class="star">★</span>{% endif %}{% endfor %}</div>
+
+  <div class="job-row"><b>技术栈：</b>{% for t in job.tech_stack %}<span class="chip">{{ t }}</span>{% endfor %}</div>
+
+  <div class="job-row"><b>要学什么：</b></div>
+  <ul>
+    {% for item in job.learning %}<li>{{ item }}</li>{% endfor %}
+  </ul>
+
+  <div class="job-notes">{{ job.notes }}</div>
+</div>
+{% endfor %}
+
+<h2>数据来源</h2>
+
+<ul class="job-sources">
+  {% for s in data.sources %}
+  <li><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.name }}</a></li>
+  {% endfor %}
+</ul>
