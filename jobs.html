@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "就业调研"
-description: "CS 技术岗校招性价比调研：薪资、需求、热度、难度与技术栈"
+description: "CS 技术岗校招性价比调研：21 个细分岗位 × 35 家大厂官方 JD，薪资、需求、热度、难度与技术栈"
 header-style: text
 ---
 
@@ -21,6 +21,12 @@ header-style: text
   .jobs-meta strong { color: #0085a1; }
   .job-table { font-size: 14px; }
   .job-table th { white-space: nowrap; }
+  .job-cat {
+    margin: 34px 0 14px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #0085a1;
+    font-size: 21px;
+  }
   .job-card {
     border: 1px solid #e5e5e5;
     border-radius: 8px;
@@ -69,13 +75,17 @@ header-style: text
     font-size: 13.5px;
     margin-top: 10px;
   }
+  .job-jds { font-size: 13.5px; margin-top: 8px; }
+  .job-jds li { margin: 2px 0; }
+  .company-table { font-size: 13.5px; }
   .job-sources { font-size: 13.5px; }
   .job-sources li { margin: 4px 0; }
 </style>
 
 <div class="jobs-meta">
   <strong>调研时间：{{ data.updated }}</strong> ｜ 面向：{{ data.audience }}<br>
-  口径说明：薪资为校招<strong>年包</strong>（base×月数 + 签字费 + 股票），来自 Offershow、牛客网爆料及公开招聘报告，为区间参考而非承诺；白菜 / SP / SSP 是校招 offer 的三个常见档位。本页会不定期更新，文末附全部数据来源。
+  <strong>数据口径：</strong>薪资为校招<strong>年包</strong>（base×月数 + 签字费 + 股票），白菜 / SP / SSP 是校招 offer 的三个常见档位；岗位依据来自下方 <strong>35 家大厂官方校招网站在招职位与官方 JD</strong>（2026 年 10 月逐一实测可访问），薪资数据交叉参考前程无忧 2027 届报告、Offershow 与牛客爆料，为区间参考而非承诺。<br>
+  <strong>更新机制：</strong>本页是静态页面，<strong>不会自动更新</strong>——每次更新 = 重新联网调研一轮 → 改数据文件 <code>_data/jobs.yml</code> → 重新发布。想刷新数据时直接叫博主「更新就业调研页」即可。
 </div>
 
 <h2>性价比总览</h2>
@@ -83,7 +93,8 @@ header-style: text
 <table class="table table-striped job-table">
   <thead>
     <tr>
-      <th>岗位</th>
+      <th>大类</th>
+      <th>细分岗位</th>
       <th>薪资（年包）</th>
       <th>需求</th>
       <th>难度</th>
@@ -93,7 +104,8 @@ header-style: text
   <tbody>
     {% for job in sorted_jobs %}
     <tr>
-      <td><a href="#job-{{ forloop.index }}">{{ job.name }}</a></td>
+      <td>{{ job.category }}</td>
+      <td><a href="#{{ job.id }}">{{ job.name }}</a></td>
       <td>{{ job.salary | split: "·" | first | strip }}</td>
       <td>{{ job.headcount | split: " " | first }}</td>
       <td>{% for i in (1..5) %}{% if i <= job.difficulty %}<span class="star on">★</span>{% else %}<span class="star">★</span>{% endif %}{% endfor %}</td>
@@ -103,10 +115,13 @@ header-style: text
   </tbody>
 </table>
 
-<h2>岗位详情</h2>
+<h2>岗位详情（按大类分组）</h2>
 
-{% for job in sorted_jobs %}
-<div class="job-card" id="job-{{ forloop.index }}">
+{% for cat in data.categories %}
+<h3 class="job-cat">{{ cat }}</h3>
+{% assign cat_jobs = data.jobs | where: "category", cat | sort: "value" | reverse %}
+{% for job in cat_jobs %}
+<div class="job-card" id="{{ job.id }}">
   <h3>{{ job.name }} <span class="value-badge">性价比 {{ job.value }}</span></h3>
 
   <div class="job-salary">{{ job.salary }}</div>
@@ -124,8 +139,41 @@ header-style: text
   </ul>
 
   <div class="job-notes">{{ job.notes }}</div>
+
+  {% if job.jds %}
+  <div class="job-jds">
+    <b>代表性官方 JD / 校招渠道：</b>
+    <ul>
+      {% for jd in job.jds %}<li><a href="{{ jd.url }}" target="_blank" rel="noopener">{{ jd.company }} · {{ jd.position }}</a></li>{% endfor %}
+    </ul>
+  </div>
+  {% endif %}
 </div>
 {% endfor %}
+{% endfor %}
+
+<h2>35 家大厂 2027 校招全景</h2>
+
+<p>以下为本轮调研覆盖的全部公司，官方校招渠道均于 {{ data.updated }} 经本机逐一实测可正常访问。</p>
+
+<table class="table table-striped company-table">
+  <thead>
+    <tr>
+      <th>公司</th>
+      <th>2027 校招技术岗看点</th>
+      <th>官方校招入口</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for c in data.companies %}
+    <tr>
+      <td><strong>{{ c.name }}</strong></td>
+      <td>{{ c.point }}</td>
+      <td><a href="{{ c.site }}" target="_blank" rel="noopener">官方入口</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 <h2>数据来源</h2>
 

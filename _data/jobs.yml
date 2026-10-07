@@ -1,148 +1,741 @@
-# 「就业调研」页面数据
+# 「就业调研」页面数据（v2：细分岗位 + 35 家大厂官方校招渠道）
 # 更新方法：改这一个文件即可，页面（jobs.html）自动重新渲染
 # 字段说明：
-#   updated/audience  调研时间与面向人群，显示在页面顶部
+#   id                锚点 slug（总览表跳转用）
+#   category          大类（必须在 categories 列表里）
 #   salary            校招年包档位（爆料/公开口径，总包≈base×月数+签字费+股票）
 #   salary_note       薪资的出处/口径说明
 #   headcount         需求量与岗位量
 #   popularity        热门程度
-#   difficulty        入行难度 1-5（渲染为星级）
+#   difficulty        入行难度 1-5 整数（渲染为星级）
 #   value             性价比评分 1-5（总览表排序依据，可为 .5）
 #   tech_stack        技术栈标签
 #   learning          要学什么
-#   notes             大厂校招备注（含出处）
+#   notes             大厂 JD 关键要求与备注
+#   jds               代表性官方校招 JD / 官方渠道（公司、岗位、链接）
 
 updated: "2026-10"
 audience: "2027 届校招（2026 年秋招季）"
 
+categories:
+  - "后端开发"
+  - "算法"
+  - "AI Infra（训练/推理系统）"
+  - "数据"
+  - "客户端与前端"
+  - "测试 / 安全 / 运维"
+  - "嵌入式与芯片"
+  - "游戏开发"
+
 jobs:
-  - name: "后端开发"
-    salary: "白菜 35–40 万 · SP 40–50 万 · SSP 50 万+"
-    salary_note: "Offershow/牛客爆料口径：腾讯白菜 24–26K×15 薪，字节 25–26K×15 薪，阿里 18–22K×16 薪 + 补贴"
-    headcount: "大 —— 应用开发类是需求量最大的技术岗（前程无忧报告）"
-    popularity: "高 —— 主航道，投递也最卷"
+  # ================= 后端开发 =================
+  - id: "ai-agent-dev"
+    name: "AI 应用 / Agent 开发（2027 校招新增岗）"
+    category: "后端开发"
+    salary: "白菜 35–48 万 · SP 60 万+"
+    salary_note: "2026 届爆料口径（大模型应用开发方向）：白菜 35–48 万，SP 60 万+；2027 届各厂新设同类岗位"
+    headcount: "快速放大 —— 字节/腾讯/阿里/美团/快手/Shopee/携程/360/B站/货拉拉 2027 校招均新设 AI 应用、Agent 开发岗"
+    popularity: "暴涨 —— 前程无忧调研：53.9% 布局 AI 岗位的企业最集中招 AI 应用开发"
+    difficulty: 3
+    value: 5
+    tech_stack: ["Python / Java / TS", "LangChain / LlamaIndex / CrewAI", "RAG（向量库 / Embedding）", "Function Calling", "Prompt 工程", "评测与 Tracing"]
+    learning:
+      - "扎实的后端基本功（API、鉴权、数据库、缓存）—— 本质仍是工程岗"
+      - "RAG 全链路：文档切分、向量检索、重排、评估"
+      - "至少一种 Agent 框架实战，做出带工具调用的完整 Agent"
+      - "养成用 Cursor / Claude Code 等 AI 编程工具的习惯（携程、B站 JD 明确写了这条）"
+      - "项目要有可量化指标（准确率 / 延迟 / 成本），不要只会套模板"
+    notes: "携程 JD 原文：熟悉 LangChain/LlamaIndex/CrewAI 至少一种，负责 Agent 记忆系统、评测、注册管理；B站直接开出「AI-Native 开发工程师（后端方向）」。入行黄金窗口期，学历卡得比算法岗松，本科可投。"
+    jds:
+      - company: "字节跳动"
+        position: "AI Agent 开发工程师（2027 校招新增）"
+        url: "https://jobs.bytedance.com/campus"
+      - company: "哔哩哔哩"
+        position: "AI-Native 开发工程师（后端方向）【2027届】"
+        url: "https://jobs.bilibili.com/campus/positions/29727"
+      - company: "携程"
+        position: "Agent 开发工程师"
+        url: "https://careers.ctrip.com"
+      - company: "Shopee"
+        position: "Agent 开发工程师"
+        url: "https://careers.shopee.cn"
+
+  - id: "java-backend"
+    name: "Java 后端开发"
+    category: "后端开发"
+    salary: "白菜 30–40 万 · SP 40–50 万"
+    salary_note: "Offershow/牛客爆料：腾讯白菜 24–26K×15 薪，阿里 18–22K×16 薪；京东 20 薪结构"
+    headcount: "最大 —— 应用开发类是需求量最大的技术岗（前程无忧报告）；得物 2027 技术类需求同比 +50%"
+    popularity: "最高 —— 主航道，投递最卷，简历池最大"
     difficulty: 4
     value: 4.5
-    tech_stack: ["Java / Go", "MySQL", "Redis", "消息队列", "Linux", "分布式基础"]
+    tech_stack: ["Java（JVM / 并发 / 集合）", "Spring Boot / Cloud", "MySQL", "Redis", "消息队列", "微服务 / DDD"]
     learning:
-      - "语言任选 Java 或 Go 深入一门"
-      - "计算机网络 / 操作系统 / 数据库三大件（八股核心）"
-      - "两个能讲清架构取舍的项目（秒杀、短链、IM 等）"
+      - "Java 深入：JVM、并发编程、集合源码"
+      - "Spring 全家桶 + 一个微服务项目"
+      - "计网 / 操作系统 / 数据库三大件（八股核心）"
       - "LeetCode 300+，笔试必过"
-      - "一段大厂实习是分水岭，尽早投递"
-    notes: "hc 最多、容错最高、进可攻退可守的基本盘；美团白菜 21–23K×15.5 薪略低一档。"
+      - "一段大厂实习是分水岭"
+    notes: "hc 最多、容错最高的基本盘。腾讯微保 JD 原文要求：熟悉 Go/C++/Java 至少一种、MySQL 设计与优化，DDD、状态机编排是加分项；货拉拉、得物、京东均以 Java 为主力后端语言。"
+    jds:
+      - company: "腾讯（微保）"
+        position: "Java 后台开发工程师"
+        url: "https://join.qq.com"
+      - company: "得物"
+        position: "Java 开发工程师"
+        url: "https://campus.dewu.com"
+      - company: "货拉拉"
+        position: "Java 后端（热招）"
+        url: "https://huolala.jobs.feishu.cn/index"
+      - company: "京东"
+        position: "软件开发（技术方向）"
+        url: "https://campus.jd.com"
 
-  - name: "算法工程师（AI / 大模型）"
-    salary: "白菜 40–50 万 · SP 50–60 万 · SSP 60 万+（顶尖人才计划另计）"
-    salary_note: "前程无忧：2027 届大模型算法岗月薪中位数 27329 元，居所有校招岗位之首；顶尖者年包 50 万+"
-    headcount: "中 —— AI 校招岗位量同比 +47.3%（脉脉），但集中在头部大厂与 AI 独角兽"
-    popularity: "最高 —— 简历密度最大的方向"
+  - id: "go-backend"
+    name: "Go 后端开发"
+    category: "后端开发"
+    salary: "白菜 32–42 万 · SP 45 万±"
+    salary_note: "爆料口径与 Java 接近或略高；字节白菜 25–26K×15 薪"
+    headcount: "大 —— 字节全系主力语言，B站、Shopee、滴滴、得物均大量招 Go"
+    popularity: "高 —— 云原生带动下持续升温"
+    difficulty: 4
+    value: 4.5
+    tech_stack: ["Go（GMP / GC / channel）", "K8s / 云原生", "MySQL / Redis / Kafka", "微服务框架（KiteX / go-zero）", "分布式"]
+    learning:
+      - "Go 语言深入：GMP 调度、内存 GC、并发模型"
+      - "字节官方要求：存储、缓存、消息队列、分布式组件 + 数据结构/操作系统/网络"
+      - "一个高并发项目（秒杀、IM、短链）"
+      - "LeetCode 300+"
+    notes: "字节校招后端岗官方解读：至少熟悉 Golang/Python/Java 一门，看重存储/缓存/MQ/分布式组件与计算机基础。B站服务端 JD：熟练 Go 或 Java，熟悉 MySQL/Redis/Kafka 等分布式中间件，具备 AI 原生思维者优先。"
+    jds:
+      - company: "字节跳动"
+        position: "后端开发工程师（校招官方解读）"
+        url: "https://www.nowcoder.com/discuss/668087363976896512"
+      - company: "哔哩哔哩"
+        position: "服务端开发工程师【2027届】"
+        url: "https://jobs.bilibili.com/campus/positions/29731"
+      - company: "Shopee"
+        position: "研发工程师"
+        url: "https://careers.shopee.cn"
+      - company: "得物"
+        position: "Golang 开发"
+        url: "https://campus.dewu.com"
+
+  - id: "cpp-infra"
+    name: "C++ 后端 / 基础架构"
+    category: "后端开发"
+    salary: "白菜 35–50 万"
+    salary_note: "爆料口径；基础架构、编译器、存储引擎方向有溢价"
+    headcount: "中 —— 集中在基础架构/存储/数据库/云厂商，hc 明显少于 Java/Go"
+    popularity: "中 —— 简历池小，竞争相对温和"
     difficulty: 5
     value: 4
-    tech_stack: ["Python", "PyTorch", "Transformer", "LLM 微调 / RAG / Agent", "线性代数与概率论"]
+    tech_stack: ["C++17/20", "Linux 系统编程", "网络编程（epoll / io_uring）", "存储引擎 / 数据库内核", "分布式一致性（Raft / Paxos）"]
     learning:
-      - "系统学深度学习（李宏毅、CS231n）"
-      - "精读并复现 Transformer / BERT / GPT 等核心论文"
-      - "一段大模型相关实习或高质量开源项目"
-      - "LeetCode 200+（算法岗笔试一样要过）"
-    notes: "腾讯青云计划、华为天才少年（最高 201 万）等顶尖项目薪资不设上限，但普遍卡顶会论文或顶尖学历，二八分化严重。"
+      - "C++ 深入：内存模型、STL 源码、现代特性"
+      - "Linux：进程线程、IO 多路复用、性能分析"
+      - "一个硬核项目：mini 数据库、KV 存储、RPC 框架"
+      - "读开源：LevelDB / Redis / brpc 源码"
+    notes: "蚂蚁基础平台研发（C/C++）、寒武纪编译器研发与高性能计算库、华为操作系统/云、腾讯 TEG 都走这个方向。门槛高、培养周期长，但一旦入行护城河深，35 岁焦虑相对小。"
+    jds:
+      - company: "蚂蚁集团"
+        position: "基础平台研发工程师（C/C++）"
+        url: "https://talent.antgroup.com"
+      - company: "寒武纪"
+        position: "编译器研发 / 高性能计算库开发"
+        url: "https://www.cambricon.com"
+      - company: "华为"
+        position: "软件开发（操作系统 / 云计算）"
+        url: "https://career.huawei.com"
 
-  - name: "测试开发"
-    salary: "白菜 25–35 万"
-    salary_note: "牛客/Offershow 爆料口径，整体比后端低一档"
-    headcount: "中小 —— 但供不应求，有报道称 2026 秋招供需比约 1:8（掘金）"
-    popularity: "低 —— 关注度不高，反而是洼地"
-    difficulty: 2
+  # ================= 算法 =================
+  - id: "llm-algo"
+    name: "大模型算法（预训练 / 后训练）"
+    category: "算法"
+    salary: "白菜 40–55 万 · SP 70 万+ · SSP 80–120 万"
+    salary_note: "前程无忧 2027 届报告：大模型算法岗月薪中位 27329 元，居所有校招岗位之首（同比 +10%）；顶尖人才计划（字节 Seed、华为天才少年、快手快Star、Momenta Mstar、百度 AIDU）100–230 万"
+    headcount: "中小 —— 集中在头部大厂与 AI 独角兽，hc 少但单价最高"
+    popularity: "最高 —— 简历密度最大、最卷的方向"
+    difficulty: 5
     value: 4
-    tech_stack: ["Python / Java", "自动化测试框架", "CI / CD", "质量效能平台"]
+    tech_stack: ["PyTorch", "Transformer / MoE", "预训练数据处理", "SFT / RLHF / DPO", "LoRA / QLoRA", "分布式训练（Megatron / DeepSpeed）"]
     learning:
-      - "一门语言 + 常见自动化框架（Selenium / Pytest 等）"
-      - "接口测试、性能测试、CI 流水线实战"
-      - "计算机基础八股要求低于后端，但仍要考"
-    notes: "门槛与面试强度低于后端，进大厂的'性价比路线'；注意区分纯功能测试（天花板低），要投'测试开发/质量效能'方向。"
+      - "深度学习系统课（李宏毅 / CS231n）+ 复现 Transformer"
+      - "精读 GPT / LLaMA / Qwen 技术报告，跑通一次完整微调"
+      - "华为 JD 同款要求：预训练、LoRA/QLoRA 微调、RLHF/DPO 对齐、端侧部署"
+      - "顶会论文（ACL / NeurIPS / ICML / ICLR）或千卡集群实习经历几乎是硬门槛"
+    notes: "二八分化最极端的方向：拿到的是校招薪资天花板，但普遍卡顶会论文或顶尖学历。华为 JD 还要求端侧部署（HarmonyOS）；讯飞 JD 含后训练强化学习、大模型训推框架。"
+    jds:
+      - company: "华为"
+        position: "AI 大模型算法工程师（预训练 / 微调 / RLHF / DPO）"
+        url: "https://www.nowcoder.com/jobs/detail/452534"
+      - company: "百度"
+        position: "AIDU 计划（大模型算法，百万年薪级）"
+        url: "https://talent.baidu.com"
+      - company: "科大讯飞"
+        position: "AI 研究算法工程师（大模型预训练 / 后训练）"
+        url: "https://campus.iflytek.com"
+      - company: "Shopee"
+        position: "AI Star：大模型预训练 / 后训练 / 强化学习算法"
+        url: "https://careers.shopee.cn"
 
-  - name: "客户端开发（Android / iOS / 桌面）"
-    salary: "白菜 30–38 万 · SP 40 万±"
-    salary_note: "Offershow 爆料口径，与后端接近或略低"
-    headcount: "中小 —— 岗位量明显少于后端"
-    popularity: "中低 —— 降温多年，简历池也小"
-    difficulty: 3
-    value: 3.5
-    tech_stack: ["Kotlin / Swift", "C++（桌面端）", "系统原理", "跨端框架（RN / Flutter）"]
+  - id: "recsys-algo"
+    name: "搜广推算法（搜索 / 广告 / 推荐）"
+    category: "算法"
+    salary: "白菜 35–50 万 · SSP 65–110 万"
+    salary_note: "前程无忧 2027 届报告：推荐算法岗月薪中位 24522 元；拼多多搜推广 SSP 爆料 85–110 万"
+    headcount: "中大 —— 每个做内容/电商的厂都要：字节、快手、阿里淘天、拼多多、小红书、携程、美团、Shopee、得物"
+    popularity: "高 —— 算法岗里 hc 最多、工程结合最紧的方向"
+    difficulty: 4
+    value: 4.5
+    tech_stack: ["召回 / 排序 / 重排", "CTR 预估（DeepFM / DIN）", "超长行为序列建模", "对比学习 / 强化学习", "生成式推荐（OneRec）", "SQL / Spark"]
     learning:
-      - "选一端深入（Android 推荐 Kotlin）"
-      - "性能优化、启动优化、内存治理等项目亮点"
-      - "八股与笔试与后端同标准"
-    notes: "岗位少但竞争也小，面试强度低于后端；可选项少是主要风险，建议同时保留后端能力作备胎。"
+      - "机器学习基础 + 推荐系统经典模型演进路线"
+      - "携程 JD 同款：信息流召回/排序/重排、超长用户行为序列建模"
+      - "关注「生成式推荐」新范式（快手 OneRec：多模态 + MoE + 强化学习）"
+      - "工程能力一样重要：SQL、Spark、特征管线"
+    notes: "正在经历「大模型化」改造：阿里淘天 JD 已要求 Agentic Search、生成式预估/召回、多智能体协同导购；快手 OneRec 做生成式推荐。比大模型算法岗 hc 多、学历卡得稍松，是算法里性价比不错的选择。"
+    jds:
+      - company: "阿里（淘天）"
+        position: "算法工程师 - AI 搜索/推荐/广告"
+        url: "https://campus-talent.alibaba.com/campus/position/199907820022"
+      - company: "携程"
+        position: "算法工程师（搜索推荐方向）"
+        url: "https://www.nowcoder.com/jobs/detail/463584"
+      - company: "快手"
+        position: "推荐大模型算法工程师（OneRec）"
+        url: "https://campus.kuaishou.cn"
+      - company: "Shopee"
+        position: "算法 - 搜广推大模型方向"
+        url: "https://careers.shopee.cn"
 
-  - name: "前端开发"
-    salary: "白菜 28–38 万"
-    salary_note: "爆料口径约 18–25K×15–16 薪"
-    headcount: "中"
+  - id: "aigc-algo"
+    name: "生成式算法（AIGC / 数字人 / 多模态生成）"
+    category: "算法"
+    salary: "白菜 38–55 万"
+    salary_note: "前程无忧 2027 届报告：多模态算法岗月薪中位 26721 元，仅次于大模型算法；爆料口径参照大模型档略低"
+    headcount: "中小 —— 视频生成、数字人、AI 特效方向需求集中在字节、快手（可灵）、360、米哈游、商汤"
+    popularity: "高 —— AIGC 应用爆发带动"
+    difficulty: 5
+    value: 4
+    tech_stack: ["Diffusion / DiT", "视频生成", "多模态理解+生成统一", "数字人驱动", "VAE / CLIP", "ComfyUI 生态"]
+    learning:
+      - "Diffusion 原理与 Stable Diffusion / DiT 源码级理解"
+      - "多模态：CLIP、VLM、理解与生成统一架构"
+      - "跟住开源社区（HuggingFace / ComfyUI）"
+      - "顶会论文或高影响力开源项目"
+    notes: "字节校招在招「AIGC 算法工程师（AI 达人/数字人方向）」；360 招视觉算法（AIGC/多模态）；网易雷火把生成式 AI 用于游戏内容生产。岗位对口面比搜广推窄，选方向前先看 hc。"
+    jds:
+      - company: "字节跳动"
+        position: "AIGC 算法工程师（AI 达人 / 数字人方向）"
+        url: "https://jobs.bytedance.com/campus/m/position/detail/7670013404652980533"
+      - company: "360"
+        position: "视觉算法工程师（AIGC / 多模态）"
+        url: "https://360campus.zhiye.com/campus/jobs"
+      - company: "米哈游"
+        position: "基础大模型等 AI 方向（全面开放）"
+        url: "https://campus.mihoyo.com"
+
+  - id: "cv-algo"
+    name: "CV / 多模态感知算法"
+    category: "算法"
+    salary: "白菜 30–45 万"
+    salary_note: "前程无忧 2027 届报告：CV / 自动驾驶算法月薪中位约 24300 元，低于大模型与多模态"
+    headcount: "中小 —— 传统 CV（检测/分割）岗位收缩，需求流向多模态感知、智驾感知、机器人感知"
+    popularity: "中 —— 前几年的卷王，正在降温"
+    difficulty: 5
+    value: 3
+    tech_stack: ["检测 / 分割 / 跟踪", "BEV 感知", "多传感器融合", "VLM", "模型部署（TensorRT / ONNX）"]
+    learning:
+      - "CV 基础（CS231n）+ 检测分割经典模型"
+      - "向 BEV 感知 / VLM 多模态靠拢，纯 2D CV 岗在变少"
+      - "部署能力（TensorRT）是差异化优势"
+    notes: "荣耀招机器人感知算法工程师、蔚来招视觉感知算法、地平线招 VLM 多模态大模型算法工程师——纯 CV 岗正在和智驾/机器人/多模态融合，建议把简历往「感知 + 大模型」方向包装。"
+    jds:
+      - company: "地平线"
+        position: "VLM 多模态大模型算法工程师"
+        url: "https://horizonrobotics.jobs.feishu.cn/index"
+      - company: "荣耀"
+        position: "机器人感知算法工程师"
+        url: "https://career.honor.com"
+      - company: "蔚来"
+        position: "大模型 / AI 算法（感知方向）"
+        url: "https://nio.jobs.feishu.cn/index"
+
+  - id: "ad-algo"
+    name: "自动驾驶算法（端到端 / VLA / 规控）"
+    category: "算法"
+    salary: "白菜 30–45 万 · 顶尖计划 100 万+"
+    salary_note: "地平线智驾大模型岗月薪 25–40K（公开招聘页）；Momenta Mstar 校招百万年薪起"
+    headcount: "中 —— 智驾赛道 2026 年回暖：小鹏约 1000 人、理想/蔚来/华为车 BU/ Momenta/地平线均扩招"
+    popularity: "高 —— 端到端 + VLA 带火"
+    difficulty: 5
+    value: 4
+    tech_stack: ["端到端大模型", "VLA（视觉-语言-动作）", "BEV 感知", "轨迹预测 / 行为决策 / 规控", "强化学习后训练", "数据闭环"]
+    learning:
+      - "智驾全栈认知：感知 → 预测 → 规划 → 控制"
+      - "端到端 / 世界模型前沿（读 Momenta、特斯拉 AI Day 技术路线）"
+      - "小鹏 JD 同款：行为决策、轨迹生成、运动规划、车端 BEV 感知"
+      - "普遍要求硕士起步，顶会/竞赛/实习加分大"
+    notes: "Momenta Mstar 四个方向（世界模型、端到端决策规划、端到端大模型、训练推理优化）校招百万年薪起；小鹏把公司定位改为「物理 AI 公司」，VLA 岗是核心；理想「理想+」做 Physical AI 基座模型。"
+    jds:
+      - company: "小鹏"
+        position: "VLA 大模型算法工程师"
+        url: "https://xiaopeng.jobs.feishu.cn/campus"
+      - company: "Momenta"
+        position: "端到端大模型 / 世界模型算法工程师（Mstar）"
+        url: "https://momenta.jobs.feishu.cn/campus"
+      - company: "地平线"
+        position: "智能驾驶大模型算法工程师"
+        url: "https://horizonrobotics.jobs.feishu.cn/index"
+      - company: "理想汽车"
+        position: "「理想+」Physical AI 基座模型"
+        url: "https://www.lixiang.com/employ/campus.html"
+
+  - id: "embodied-algo"
+    name: "具身智能 / 机器人算法"
+    category: "算法"
+    salary: "爆料口径少 · 顶尖专项 60–100 万+"
+    salary_note: "新兴方向暂无统一薪资口径；参照理想+、Momenta 等顶尖专项档位"
+    headcount: "小但增速快 —— 理想、小米、华为、Momenta、荣耀、讯飞均在 2027 校招开设"
+    popularity: "快速升温 —— 下一个风口叙事"
+    difficulty: 5
+    value: 4
+    tech_stack: ["VLA 具身大模型", "强化学习", "运动控制 / 全身控制", "仿真（Isaac / MuJoCo）", "机器人操作系统 ROS"]
+    learning:
+      - "机器人学基础：运动学、动力学、控制论"
+      - "强化学习 + 模仿学习，跑通 sim-to-real 流程"
+      - "关注 VLA 模型（RT 系列、π0 等）论文"
+      - "坑少人多名校围猎，尽量有机器人实验室背景"
+    notes: "小米官方校招海报点名 Xiaomi-Robotics-1、CyberOne 人形机器人；理想+ 招 VLA 具身大模型与人形机器人方向；Momenta 招具身控制算法工程师。岗位绝对数量还很少，属于高风险高赔率的押注。"
+    jds:
+      - company: "理想汽车"
+        position: "「理想+」VLA 具身大模型 / 人形机器人"
+        url: "https://www.lixiang.com/employ/campus.html"
+      - company: "小米"
+        position: "机器人方向（AI 岗需求 +50%）"
+        url: "https://hr.xiaomi.com"
+      - company: "Momenta"
+        position: "具身控制算法工程师"
+        url: "https://momenta.jobs.feishu.cn/campus"
+
+  # ================= AI Infra =================
+  - id: "ai-infra"
+    name: "AI Infra / 训练推理优化"
+    category: "AI Infra（训练/推理系统）"
+    salary: "白菜 40–55 万 · SSP 80 万±"
+    salary_note: "爆料口径参照大模型算法档；系统方向 SSP 溢价明显"
+    headcount: "中 —— 百度/蚂蚁/商汤/讯飞/小红书/Shopee/Momenta/寒武纪 2027 校招均设 AI Infra 岗"
+    popularity: "升温中 —— 大模型落地的「卖铲人」"
+    difficulty: 5
+    value: 4.5
+    tech_stack: ["C++ / CUDA", "vLLM / TensorRT-LLM", "分布式训练（NCCL / Megatron）", "GPU 集群调度", "编译器（TVM / MLIR）"]
+    learning:
+      - "C++ 与计算机系统功底（体系结构、操作系统）"
+      - "CUDA 编程与算子优化"
+      - "推理框架源码：vLLM 的 PagedAttention、Continuous Batching"
+      - "分布式训练：数据/张量/流水线并行"
+    notes: "Momenta 训练推理优化工程师 JD 点名 CUDA/NCCL 与 GPU 集群效率；寒武纪招编译器研发；商汤招推理 Infra 开发。兼具「AI 溢价」和「系统岗护城河」，卡学历程度比算法研究岗低，工程强者友好。"
+    jds:
+      - company: "百度"
+        position: "AI Infra 工程师"
+        url: "https://talent.baidu.com"
+      - company: "Momenta"
+        position: "训练推理优化工程师（CUDA / NCCL）"
+        url: "https://momenta.jobs.feishu.cn/campus"
+      - company: "商汤"
+        position: "推理 Infra 开发工程师"
+        url: "https://www.sensetime.com/cn/join-index"
+      - company: "科大讯飞"
+        position: "大模型训推框架优化"
+        url: "https://campus.iflytek.com"
+
+  # ================= 数据 =================
+  - id: "data-dev"
+    name: "数据开发 / 大数据"
+    category: "数据"
+    salary: "白菜 30–40 万"
+    salary_note: "爆料口径，与后端接近"
+    headcount: "中 —— 需求稳定：携程、货拉拉、Shopee、360、滴滴均在招"
     popularity: "中"
     difficulty: 3
     value: 3.5
-    tech_stack: ["TypeScript", "React / Vue", "工程化（Vite / webpack）", "Node.js 基础"]
+    tech_stack: ["SQL", "Spark / Flink", "数仓建模", "Hadoop 生态", "Python"]
+    learning:
+      - "SQL 熟练到能写复杂窗口函数"
+      - "Spark / Flink 原理与调优"
+      - "一个离线 + 一个实时数仓项目"
+    notes: "携程 JD 点名 Hadoop/Spark/Flink 大数据平台方向；货拉拉把大数据列为热招。AI 热潮下特征工程、训练数据管线需求看涨；注意与「数据分析师」区分：开发岗要笔试写代码。"
+    jds:
+      - company: "携程"
+        position: "大数据平台开发工程师"
+        url: "https://careers.ctrip.com"
+      - company: "货拉拉"
+        position: "大数据（热招）"
+        url: "https://huolala.jobs.feishu.cn/index"
+      - company: "Shopee"
+        position: "大数据开发工程师"
+        url: "https://careers.shopee.cn"
+
+  - id: "data-sci"
+    name: "数据分析 / 数据科学"
+    category: "数据"
+    salary: "白菜 20–30 万"
+    salary_note: "爆料口径；注意与「AI 数据训练师」（月薪中位仅 8977 元，前程无忧 2027 届报告）严格区分"
+    headcount: "中小"
+    popularity: "中"
+    difficulty: 3
+    value: 2.5
+    tech_stack: ["SQL", "Python（pandas）", "统计学", "A/B 实验", "BI 可视化"]
+    learning:
+      - "统计学与业务sense并重"
+      - "SQL + Python 分析链路"
+      - "A/B 实验设计与因果推断"
+    notes: "字节招数据科学家、拼多多招数据分析师，但岗位总量有限且偏业务。前程无忧报告里「AI 数据训练师」月薪中位不足头部 AI 岗 1/3——投简历时务必看清是「分析/科学」还是「标注/训练师」。"
+    jds:
+      - company: "字节跳动"
+        position: "数据科学家"
+        url: "https://jobs.bytedance.com/campus"
+      - company: "拼多多"
+        position: "数据分析师"
+        url: "https://careers.pddglobalhr.com/campus"
+
+  # ================= 客户端与前端 =================
+  - id: "client-dev"
+    name: "客户端开发（Android / iOS）"
+    category: "客户端与前端"
+    salary: "白菜 30–38 万 · SP 40 万±"
+    salary_note: "爆料口径，与后端接近或略低"
+    headcount: "中小 —— 字节、得物、拼多多、OPPO 稳定在招"
+    popularity: "中低 —— 降温多年，简历池小，反而没那么卷"
+    difficulty: 3
+    value: 3.5
+    tech_stack: ["Kotlin / Swift", "系统原理（AMS / Runtime）", "性能优化", "跨端框架（RN / Flutter）", "C++（桌面 / 跨端底座）"]
+    learning:
+      - "选一端深入（Android 推荐 Kotlin）"
+      - "性能优化、启动优化、内存治理做成项目亮点"
+      - "八股与笔试与后端同标准"
+    notes: "字节客户端 JD 明确「可接受零基础培养」，要求精通 Java/OC/Swift/C++ 至少一门；OPPO 招 ColorOS 系统应用、大模型应用客户端方向——「客户端 + AI 应用」是新卖点。岗位绝对量少是主要风险，建议保留后端能力作备胎。"
+    jds:
+      - company: "字节跳动"
+        position: "客户端开发工程师"
+        url: "https://jobs.bytedance.com/campus"
+      - company: "得物"
+        position: "客户端（iOS / Android）"
+        url: "https://campus.dewu.com"
+      - company: "OPPO"
+        position: "ColorOS 系统应用 / 大模型应用客户端"
+        url: "https://careers.oppo.com"
+
+  - id: "frontend-dev"
+    name: "前端 / AI 全栈开发"
+    category: "客户端与前端"
+    salary: "白菜 28–38 万"
+    salary_note: "爆料口径约 18–25K×15–16 薪；AI 全栈方向上浮"
+    headcount: "中 —— 拼多多、360、B站稳定招；字节/腾讯/美团/快手 2027 新增「AI 全栈工程师」"
+    popularity: "中 —— AI 全栈方向在拉动需求回流"
+    difficulty: 3
+    value: 3.5
+    tech_stack: ["TypeScript", "React / Vue", "工程化（Vite / webpack）", "Node.js / NestJS", "LLM 应用接入（SSE / Agent UI）"]
     learning:
       - "JS/TS 深入（事件循环、异步、浏览器原理）"
       - "一个主流框架源码级理解"
-      - "AI 应用方向的前端/全栈项目加分"
-    notes: "AI 应用爆发带来前端/全栈需求回流；纯切图岗在萎缩，工程化和全栈能力是关键差异化。"
+      - "补一门后端语言 + 数据库，向 AI 全栈靠"
+      - "做 AI 应用型项目（对话产品、Agent 工作台）"
+    notes: "纯切图岗在萎缩，「AI 全栈工程师」成为 2027 校招新岗（字节、腾讯、美团、快手同设）：前端 + Node + LLM 接入的复合能力。小红书校招直接把「产品工程师」列为独立方向。"
+    jds:
+      - company: "字节跳动"
+        position: "AI 全栈工程师（2027 新增）"
+        url: "https://jobs.bytedance.com/campus"
+      - company: "拼多多"
+        position: "Web 前端研发工程师"
+        url: "https://careers.pddglobalhr.com/campus"
+      - company: "360"
+        position: "全栈开发（服务端 / Web 前端）"
+        url: "https://360campus.zhiye.com/campus/jobs"
 
-  - name: "数据开发 / 大数据"
-    salary: "白菜 30–40 万"
-    salary_note: "爆料口径，与后端接近"
-    headcount: "中 —— 需求稳定"
-    popularity: "中"
-    difficulty: 3
-    value: 3.5
-    tech_stack: ["SQL", "Spark / Flink", "数仓建模", "Python"]
+  # ================= 测试 / 安全 / 运维 =================
+  - id: "test-dev"
+    name: "测试开发"
+    category: "测试 / 安全 / 运维"
+    salary: "白菜 25–35 万"
+    salary_note: "爆料口径，整体比后端低一档"
+    headcount: "中小 —— 但供不应求，2026 秋招供需比约 1:8（掘金）"
+    popularity: "低 —— 关注度不高，反而是洼地"
+    difficulty: 2
+    value: 4
+    tech_stack: ["Python / Java", "自动化框架（Selenium / Pytest）", "CI / CD", "质量效能平台", "AI 测试工具"]
     learning:
-      - "SQL 熟练到能写复杂窗口函数"
-      - "Spark/Flink 原理与调优"
-      - "一个离线 + 一个实时数仓项目"
-    notes: "注意与'数据分析师'区分：开发岗要笔试写代码，分析师偏业务 SQL；AI 热潮下特征工程/数据管线需求看涨。"
+      - "一门语言 + 常见自动化框架"
+      - "接口测试、性能测试、CI 流水线实战"
+      - "八股要求低于后端，但仍要考"
+    notes: "门槛与面试强度低于后端，进大厂的性价比路线；得物、京东、网易互娱（游戏测开）、B站均在招。务必投「测试开发 / 质量效能」而非纯功能测试（天花板低，2026 届功能测试白菜已跌破 20 万）。"
+    jds:
+      - company: "得物"
+        position: "测试开发"
+        url: "https://campus.dewu.com"
+      - company: "京东"
+        position: "测试（技术方向）"
+        url: "https://campus.jd.com"
+      - company: "网易游戏（互娱）"
+        position: "游戏测试开发"
+        url: "https://game.campus.163.com"
 
-  - name: "嵌入式 / 芯片"
-    salary: "白菜 20–35 万（硬件厂与芯片厂差异较大）"
-    salary_note: "爆料口径；华为、大疆、芯片厂各有档位"
-    headcount: "中 —— 硬科技热度上升（脉脉：芯片半导体企业热搜度直逼互联网大厂）"
-    popularity: "升温中"
+  - id: "security"
+    name: "安全工程师"
+    category: "测试 / 安全 / 运维"
+    salary: "白菜 25–40 万"
+    salary_note: "爆料口径；AI 安全、大模型攻防方向明显上浮"
+    headcount: "小 —— 京东安全技术、拼多多安全、360、B站（游戏 AI 风控）、贝壳在招"
+    popularity: "低中 —— 小众但稳定"
     difficulty: 4
     value: 3.5
-    tech_stack: ["C / C++", "单片机 / RTOS", "Linux 驱动", "数电模电"]
+    tech_stack: ["Web 安全 / 渗透", "二进制 / 逆向", "漏洞挖掘", "大模型安全（越狱 / 注入）", "风控算法"]
     learning:
-      - "C 语言深入 + 计算机组成原理"
-      - "STM32 / Linux 驱动项目"
-      - "关注车企智驾、机器人、芯片三条风口线"
-    notes: "薪资上限低于互联网，但行业周期稳、中年危机小；智驾/机器人方向近年薪资明显上探。"
+      - "Web 安全基础（OWASP Top 10）+ 靶场实战"
+      - "CTF 经历是简历硬通货"
+      - "关注 AI 安全新方向：大模型漏洞检测、Prompt 注入"
+    notes: "360 把「智能化漏洞挖掘研究员」「AI 大模型算法工程师（安全方向，用大模型做 Web/二进制漏洞检测）」作为校招重点，全部岗位考察 AI 能力；蚂蚁把 AI 安全列入聚焦领域。传统安全岗 hc 少，「AI + 安全」是增量。"
+    jds:
+      - company: "360"
+        position: "智能化漏洞挖掘研究员 / AI 大模型算法（安全方向）"
+        url: "https://360campus.zhiye.com/campus/jobs"
+      - company: "京东"
+        position: "安全技术（技术方向）"
+        url: "https://campus.jd.com"
+      - company: "哔哩哔哩"
+        position: "游戏 AI 风控算法工程师"
+        url: "https://jobs.bilibili.com/campus"
 
-  - name: "运维 / SRE"
+  - id: "sre"
+    name: "运维 / SRE"
+    category: "测试 / 安全 / 运维"
     salary: "白菜 25–35 万"
     salary_note: "爆料口径"
-    headcount: "小 —— 大厂少量 hc，稳定"
+    headcount: "小 —— Shopee、字节稳定少量 hc"
     popularity: "低"
     difficulty: 3
     value: 3
-    tech_stack: ["Linux", "Kubernetes / Docker", "监控与可观测性", "Shell / Python"]
+    tech_stack: ["Linux", "Kubernetes / Docker", "可观测性（Prometheus / Grafana）", "Shell / Python", "IaC（Terraform）"]
     learning:
       - "Linux 深入（性能分析、网络排障）"
-      - "K8s 全家桶与 IaC（Terraform 等）"
+      - "K8s 全家桶与 IaC"
       - "SRE 方法论（SLO、容量规划、故障演练）"
-    notes: "岗位少而稳定，有 on-call；云原生方向比传统运维前景好。"
+    notes: "岗位少而稳定，有 on-call。阿里 2027 校招新增「AI SRE」方向（给大模型训练推理做稳定性），是运维岗里少见的增长点。"
+    jds:
+      - company: "Shopee"
+        position: "SRE 工程师"
+        url: "https://careers.shopee.cn"
+      - company: "阿里巴巴"
+        position: "AI SRE（2027 新增 AI 原生岗）"
+        url: "https://campus-talent.alibaba.com"
+      - company: "字节跳动"
+        position: "SRE"
+        url: "https://jobs.bytedance.com/campus"
+
+  # ================= 嵌入式与芯片 =================
+  - id: "embedded"
+    name: "嵌入式开发"
+    category: "嵌入式与芯片"
+    salary: "白菜 20–35 万"
+    salary_note: "爆料口径；大疆、车企智驾、机器人方向明显上浮"
+    headcount: "中 —— 大疆 12 大类 40+ 岗含嵌入式，华为、OPPO、蔚来、荣耀均在招"
+    popularity: "升温中 —— 硬科技 + 机器人 + 智驾三条线拉动"
+    difficulty: 4
+    value: 3.5
+    tech_stack: ["C / C++", "RTOS / Linux 驱动", "ARM / 异构计算", "端侧 AI 部署（NPU / DSP）", "通信协议"]
+    learning:
+      - "C 语言深入 + 计算机组成原理"
+      - "STM32 / Linux 驱动项目"
+      - "大疆 JD 同款方向：底层驱动、OS 优化、中间件、端侧 AI 系统"
+      - "关注端侧 AI（NPU 推理优化）这个高溢价交叉点"
+    notes: "大疆热招「空间智能 OS 工程师」「端侧 AI 系统工程师（NPU/DSP 优化、异构计算、编译器优先）」；蔚来招车端 AI Agent 运行时基座软件工程师。薪资上限低于互联网，但行业周期稳、中年危机小。"
+    jds:
+      - company: "大疆"
+        position: "嵌入式 / 空间智能 OS / 端侧 AI 系统工程师"
+        url: "https://careers.dji.com/zh-CN/campus"
+      - company: "蔚来"
+        position: "车端 AI Agent 运行时基座软件开发"
+        url: "https://nio.jobs.feishu.cn/index"
+      - company: "OPPO"
+        position: "显示系统（SurfaceFlinger / HWC / DRM）"
+        url: "https://careers.oppo.com"
+
+  - id: "chip"
+    name: "芯片研发"
+    category: "嵌入式与芯片"
+    salary: "白菜 30–45 万"
+    salary_note: "爆料口径；AI 芯片方向（寒武纪、地平线）上浮"
+    headcount: "中小 —— 寒武纪、小米、理想、地平线、华为海思在招"
+    popularity: "升温中 —— AI 算力 + 国产替代双驱动"
+    difficulty: 5
+    value: 3.5
+    tech_stack: ["数字 IC 设计（Verilog）", "验证（UVM）", "芯片后端 / STA", "编译器 / ESL 建模", "SIPI / 封装"]
+    learning:
+      - "数字电路 + Verilog，做完整流片或 FPGA 项目"
+      - "UVM 验证方法学"
+      - "AI 芯片架构（脉动阵列、NPU）入门"
+      - "普遍要求微电子/集成电路科班，硕士为主"
+    notes: "寒武纪校招覆盖数字芯片设计、逻辑验证、芯片后端、处理器设计全链路，软件侧还有大模型优化、AI 智算平台；地平线招 SoC 前端验证。专业门槛极高，非科班基本无缘，科班生则供不应求。"
+    jds:
+      - company: "寒武纪"
+        position: "数字芯片设计 / 逻辑验证 / 编译器研发"
+        url: "https://www.cambricon.com"
+      - company: "地平线"
+        position: "SoC 前端验证工程师"
+        url: "https://horizonrobotics.jobs.feishu.cn/index"
+      - company: "小米"
+        position: "芯片类"
+        url: "https://hr.xiaomi.com"
+
+  # ================= 游戏开发 =================
+  - id: "game-dev"
+    name: "游戏开发（客户端 / 引擎 / TA）"
+    category: "游戏开发"
+    salary: "白菜 25–40 万"
+    salary_note: "爆料口径；米哈游、网易 SP 档上浮明显"
+    headcount: "中 —— 米哈游 2027 校招约 500 人，网易互娱 50+ 岗、雷火 AI 岗位重点招录"
+    popularity: "中 —— 热爱驱动，简历池稳定"
+    difficulty: 4
+    value: 3.5
+    tech_stack: ["C++", "Unity / Unreal", "图形学（渲染管线 / Shader）", "游戏引擎架构", "技术美术（TA）"]
+    learning:
+      - "C++ 硬功底 + 图形学基础"
+      - "完整 Demo：渲染器、物理、Gameplay 任选做深"
+      - "引擎源码阅读（Unreal 优先）"
+      - "TA 方向：Shader + DCC 工具链"
+    notes: "网易雷火 2027 秋招把人工智能类列为重点：Agent 智能体、大模型算法、智能 NPC、机器人算法——「游戏 + AI」是新趋势；米哈游基模等 AI 方向全面开放。纯游戏客户端/引擎岗看热爱，加班文化是行业常态。"
+    jds:
+      - company: "网易游戏（互娱）"
+        position: "游戏研发 / 引擎研发 / 图形开发 / TA"
+        url: "https://game.campus.163.com"
+      - company: "米哈游"
+        position: "程序 & 技术类（客户端 / 服务端 / 引擎 / 渲染）"
+        url: "https://campus.mihoyo.com"
+      - company: "腾讯（IEG）"
+        position: "游戏客户端 / 后台开发"
+        url: "https://join.qq.com"
+
+# ================= 35 家大厂 2027 校招全景（官方渠道均经本机实测可访问） =================
+companies:
+  - name: "字节跳动"
+    point: "八大类岗位、技术产品占比超七成；新增 AI 全栈、AI Agent 开发工程师；设 Seed 大模型专项"
+    site: "https://jobs.bytedance.com/campus"
+  - name: "腾讯"
+    point: "新增 AI 全栈 / Agent 开发 / AI 应用工程师等 AI 原生岗；青云计划前沿岗薪酬“上不封顶”"
+    site: "https://join.qq.com"
+  - name: "阿里巴巴"
+    point: "16 个业务集团同开、AI 岗占比超八成；新增 AI 应用研发 / Agent 优化 / AI Infra 等 7 类 AI 岗；阿里星计划"
+    site: "https://campus-talent.alibaba.com"
+  - name: "美团"
+    point: "10 大类百余种岗位，超八成 JD 明确要求 AI 应用能力；北斗计划 / LongCat 专项"
+    site: "https://zhaopin.meituan.com"
+  - name: "京东"
+    point: "11 大方向（技术含软件开发/数据与算法/安全/测试）；TGT 顶尖青年技术天才计划"
+    site: "https://campus.jd.com"
+  - name: "拼多多"
+    point: "服务端 / 客户端 / 前端 / AI Agent 研发 / 大模型算法；18 薪结构；云弧计划"
+    site: "https://careers.pddglobalhr.com/campus"
+  - name: "百度"
+    point: "74 个细分职位、AI 岗占比超 90%；含大模型算法 / 智能体算法 / Agent Harness；AIDU 计划百万年薪级"
+    site: "https://talent.baidu.com"
+  - name: "快手"
+    point: "大模型相关岗位需求翻倍；新增 AI 全栈 / Agent 开发 / FDE；快Star 顶尖计划"
+    site: "https://campus.kuaishou.cn"
+  - name: "网易游戏（互娱）"
+    point: "游戏客户端 / 服务端 / 引擎 / 图形 / TA / AI 研究等 50+ 岗"
+    site: "https://game.campus.163.com"
+  - name: "网易（互联网）"
+    point: "视觉感知 / 全栈 / 音频算法 / 大模型 / 搜推广算法"
+    site: "https://campus.163.com"
+  - name: "小米"
+    point: "产研类占 70%、AI 岗需求同比 +50%；覆盖软硬件研发 / 算法 / 芯片"
+    site: "https://hr.xiaomi.com"
+  - name: "华为"
+    point: "研发类规模最大（软件 / AI 算法 / 芯片 / 操作系统 / 网络）；天才少年年薪最高 200 万+"
+    site: "https://career.huawei.com"
+  - name: "蚂蚁集团"
+    point: "技术岗占 80%、超八成 AI 相关；笔试允许用 AI；蚂蚁星 / Plan A+ 专项"
+    site: "https://talent.antgroup.com"
+  - name: "滴滴"
+    point: "算法 / 机器人 / 数据 / 工程等；网约车 + 自动驾驶双场景"
+    site: "https://campus.didiglobal.com"
+  - name: "携程"
+    point: "LLM 算法 / 搜推算法 / Agent 开发岗 JD 公开透明（SFT / RLHF / LangChain 全写明）"
+    site: "https://careers.ctrip.com"
+  - name: "得物"
+    point: "技术类需求同比 +50%；Java / Go / 客户端 / 测开 / 策略与图像算法"
+    site: "https://campus.dewu.com"
+  - name: "小红书"
+    point: "搜推广 / 基座大模型 / AI Infra / AI Agent / AI Coding / 多模态"
+    site: "https://job.xiaohongshu.com"
+  - name: "哔哩哔哩"
+    point: "特色新岗：AI-Native 开发工程师（后端）；B-UP 顶尖技术人才项目"
+    site: "https://jobs.bilibili.com/campus"
+  - name: "米哈游"
+    point: "约 500 人；程序技术类全覆盖，基础大模型等 AI 方向全面开放"
+    site: "https://campus.mihoyo.com"
+  - name: "理想汽车"
+    point: "「理想+」专项：VLA 具身大模型 / 人形机器人 / AI 芯片 / AI Infra"
+    site: "https://www.lixiang.com/employ/campus.html"
+  - name: "蔚来"
+    point: "技术提前批：芯片 / 大模型 AI 算法 / 智能辅助驾驶 / 智能座舱 / AI 安全"
+    site: "https://nio.jobs.feishu.cn/index"
+  - name: "小鹏集团"
+    point: "探索者计划约 1000 人；转型物理 AI 公司；VLA 智驾大模型"
+    site: "https://xiaopeng.jobs.feishu.cn/campus"
+  - name: "大疆"
+    point: "12 大类 40+ 岗：算法 / 软件 / 嵌入式 / 芯片 / 硬件；端侧 AI 系统"
+    site: "https://careers.dji.com/zh-CN/campus"
+  - name: "OPPO"
+    point: "ColorOS / Android 多媒体 / 相机算法 / GUI Agent 智能体"
+    site: "https://careers.oppo.com"
+  - name: "荣耀"
+    point: "机器人感知算法等；AI 终端方向"
+    site: "https://career.honor.com"
+  - name: "地平线"
+    point: "智驾大模型 / VLM 多模态 / 规控 / SoC 验证"
+    site: "https://horizonrobotics.jobs.feishu.cn/index"
+  - name: "Momenta"
+    point: "Mstar 顶尖计划校招百万年薪起：世界模型 / 端到端大模型 / 训推优化"
+    site: "https://momenta.jobs.feishu.cn/campus"
+  - name: "科大讯飞"
+    point: "大模型预训练 / 训推框架 / 多模态 / Agent 研发 / AI 数据工程"
+    site: "https://campus.iflytek.com"
+  - name: "商汤"
+    point: "Agent Harness 研究员 / 多模态基模型 / 推理 Infra / Agent 全栈"
+    site: "https://www.sensetime.com/cn/join-index"
+  - name: "寒武纪"
+    point: "数字芯片设计 / 验证 / 编译器 / 大模型优化 / AI 智算平台"
+    site: "https://www.cambricon.com"
+  - name: "360"
+    point: "所有岗位考察 AI 能力；AI + 安全特色（智能漏洞挖掘 / 大模型安全）"
+    site: "https://360campus.zhiye.com/campus/jobs"
+  - name: "Shopee"
+    point: "研发 / 算法（搜广推大模型 / AIGC 基模）/ SRE；AI Star 顶尖计划"
+    site: "https://careers.shopee.cn"
+  - name: "贝壳"
+    point: "ADC 校招：研发 / 算法 / 数据；居住产业数字化"
+    site: "https://campus.ke.com"
+  - name: "货拉拉"
+    point: "Java 后端 / 大数据 / 算法 / Agent 开发热招"
+    site: "https://huolala.jobs.feishu.cn/index"
+  - name: "度小满"
+    point: "语音算法 / 大模型金融科技岗"
+    site: "https://campus.duxiaoman.com"
 
 sources:
-  - name: "前程无忧《2027 届校招 AI 人才市场洞察》（经上观新闻报道）"
+  - name: "前程无忧《2027 届校招 AI 人才市场洞察》（2026-08，经上观新闻报道）"
     url: "https://www.jfdaily.com/news/detail?id=1165472"
-  - name: "脉脉高聘《抢占 AI 新生代——2026 年名校生求职招聘洞察》（2025-07，经雪球/新浪科技报道）"
+  - name: "脉脉高聘《抢占 AI 新生代——2026 年名校生求职招聘洞察》（经雪球报道）"
     url: "https://xueqiu.com/3338215700/398145193"
-  - name: "腾讯 2027 校招启动报道（最高年薪 68 万，网易新闻）"
-    url: "https://www.163.com/dy/article/L44P6F9E05149PH8.html"
+  - name: "卡码笔记：2026 校招薪资报告（Java / C++ / AI / 芯片 / 银行全景）"
+    url: "https://notes.kamacoder.com/salary/yearly/2026.html"
+  - name: "Offershow 校招 offer 爆料（白菜 / SP / SSP 分档口径）"
+    url: "https://www.offershow.net/"
+  - name: "牛客网校招薪资讨论区与各厂官方校招号"
+    url: "https://www.nowcoder.com/"
   - name: "掘金：测试开发岗供需比 1:8——2026 秋招的真实温度"
     url: "https://juejin.cn/post/7678380742906200079"
-  - name: "代码随想录：2026 届计算机应届毕业生薪资盘点"
-    url: "https://programmercarl.com/other/2025salary.html"
-  - name: "牛客网校招薪资讨论区（各厂白菜/SP/SSP 爆料）"
-    url: "https://www.nowcoder.com/"
-  - name: "Offershow 校招 offer 爆料小程序/网站"
-    url: "https://www.offershow.net/"
+  - name: "35 家大厂官方校招网站 / 官方校招发布（见上方全景表，2026-10 本机逐一实测可访问）"
+    url: "https://jobs.bytedance.com/campus"
