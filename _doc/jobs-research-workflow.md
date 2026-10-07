@@ -72,7 +72,14 @@ curl -s -o /dev/null -w '%{http_code}' --noproxy '*' --max-time 8 -A 'Mozilla/5.
   - 北森：`{公司}.zhiye.com/campus`；Moka：`app.mokahr.com/campus_apply/{公司}`
 
 ### Step 3 ｜ 岗位与 JD 调研
-- 每个细分岗位至少配 **2-4 条代表性官方 JD / 官方渠道**。
+- 每个细分岗位至少配 **2-4 条代表性 JD**；`jds` 里**优先放具体职位详情页深链**，实在没有深链的标「官网在招」指向官方渠道（仅放招聘首页是被用户批评过的做法，避免）。
+- 已验证可用的深链模式：
+  - 飞书招聘：`{公司拼音}.jobs.feishu.cn/campus/position/{职位ID}/detail`（影石、小鹏、Momenta、沐瞳等实测有效）
+  - 字节：`jobs.bytedance.com/campus/m/position/detail/{职位ID}`
+  - B站：`jobs.bilibili.com/campus/positions/{职位ID}`
+  - 阿里：`campus-talent.alibaba.com/campus/position/{职位ID}`
+  - **牛客职位详情页：`nowcoder.com/jobs/detail/{id}`——SSR 页面，可 curl 抓出 JD 全文验证公司归属与内容**（各厂官方发布的校招职位会同步在这里）
+- 搜索引擎会索引上述详情页；搜索词模板：`{岗位名} 2027届校招 职位详情`（**查询词里不要带域名/URL**，会返回空结果）。
 - `notes` 里的技术要求要**摘自 JD 原文**（框架名、技术名词），禁止凭印象写。
 - 岗位是否需要新增/合并/删除，以当期各厂官方在招职位为准（例如 2027 届新出现了「AI 全栈工程师」「Agent 开发工程师」「AI SRE」）。
 
